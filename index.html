@@ -752,7 +752,8 @@ function renderQuiz() {
   document.getElementById('quizScoreBar').textContent = `점수: ${quizScore} / ${cardIdx}`;
   setPB('quiz', cardIdx + 1, cards.length);
 
-  const others = allMeanings.filter(m => m !== c.meaning);
+  const dayMeanings = byDay[currentDay].map(w => w.meaning);
+  const others = dayMeanings.filter(m => m !== c.meaning);
   const opts   = shuffle([...shuffle(others).slice(0, 3), c.meaning]);
   const cont   = document.getElementById('quizOpts');
   cont.innerHTML = '';
