@@ -459,7 +459,7 @@
 <!-- ⑦ 결과 -->
 <div class="screen" id="screen-result">
   <div class="page-header" style="position:relative; padding-top:52px;">
-    <button class="back-btn" onclick="showScreen('screen-mode')">←</button>
+    <button class="back-btn" onclick="goToMode()">←</button>
     <h1>결과</h1>
   </div>
   <div class="result-wrap">
@@ -474,7 +474,7 @@
       <div class="wrong-list" id="wrongList"></div>
     </div>
     <div class="result-btns">
-      <button class="ctrl-btn secondary" onclick="showScreen('screen-mode')" style="flex:1;">← 다시 선택</button>
+      <button class="ctrl-btn secondary" onclick="goToMode()" style="flex:1;">← 다시 선택</button>
       <button class="ctrl-btn primary" id="retryBtn" onclick="startMode('retry')" style="flex:1;display:none;">🔁 틀린것 재도전</button>
     </div>
   </div>
@@ -674,7 +674,14 @@ function startMode(mode) {
   else if (mode === 'quiz')  { renderQuiz();  goTo('screen-quiz'); }
 }
 
-function endStudy() { clearBlink(); showScreen('screen-mode'); }
+function endStudy() {
+  clearBlink(); goToMode();
+}
+function goToMode() {
+  const unknownCnt = byDay[currentDay].filter(c => unknownSet.has(c.word)).length;
+  document.getElementById('retryModeCard').classList.toggle('mode-disabled', unknownCnt === 0);
+  showScreen('screen-mode');
+}
 function resetProgress() {
   document.getElementById('resetModal').classList.add('active');
   history.pushState({ screen: history.state?.screen, modal: 'reset' }, '');
@@ -1001,7 +1008,11 @@ window.addEventListener('popstate', (e) => {
   };
 
   const dest = backMap[active] || 'screen-books';
-  showScreen(dest);
+  if (dest === 'screen-mode') {
+    goToMode();
+  } else {
+    showScreen(dest);
+  }
   history.replaceState({ screen: dest }, '');
 
   _navLock = false;
