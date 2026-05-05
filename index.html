@@ -41,7 +41,7 @@
   #loading .loading-text { font-size: 15px; color: var(--sky-dark); font-weight: 600; }
 
   /* SCREENS — 내용이 넘칠 때만 스크롤 */
-  .screen { display: none; height: 100vh; overflow-y: auto; overflow-x: hidden; animation: fadeIn 0.22s ease; padding-bottom: 24px; }
+  .screen { display: none; height: 100vh; overflow-y: auto; overflow-x: hidden; animation: fadeIn 0.22s ease; padding-bottom: 60px; }
   .screen.active { display: block; }
   @keyframes fadeIn { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:translateY(0); } }
 
@@ -278,7 +278,7 @@
 
 <!-- ④ 플래시카드 -->
 <div class="screen" id="screen-flash">
-  <div class="page-header" style="position:relative; padding: 52px 20px 22px;">
+  <div class="page-header" style="position:relative; padding: 62px 20px 22px;">
     <button class="back-btn" onclick="endStudy()">←</button>
     <div class="progress-wrap" style="padding-top:0;">
       <div class="progress-bar-bg"><div class="progress-bar" id="flashPB" style="width:0%"></div></div>
@@ -316,7 +316,7 @@
 
 <!-- ⑤ 깜빡이 -->
 <div class="screen" id="screen-blink">
-  <div class="page-header" style="position:relative; padding: 52px 20px 22px;">
+  <div class="page-header" style="position:relative; padding: 62px 20px 22px;">
     <button class="back-btn" onclick="endStudy()">←</button>
     <div class="progress-wrap" style="padding-top:0;">
       <div class="progress-bar-bg"><div class="progress-bar" id="blinkPB" style="width:0%"></div></div>
@@ -348,7 +348,7 @@
 
 <!-- ⑥ 퀴즈 -->
 <div class="screen" id="screen-quiz">
-  <div class="page-header" style="position:relative; padding: 52px 20px 22px;">
+  <div class="page-header" style="position:relative; padding: 62px 20px 22px;">
     <button class="back-btn" onclick="endStudy()">←</button>
     <div class="progress-wrap" style="padding-top:0;">
       <div class="progress-bar-bg"><div class="progress-bar" id="quizPB" style="width:0%"></div></div>
@@ -363,7 +363,7 @@
       <button class="sound-btn" onclick="speak()" style="margin-top:8px;">🔊</button>
     </div>
     <div style="margin-bottom:10px;">
-      <button class="shuffle-btn" style="width:100%;" onclick="shuffleQuiz()">🔀 섞기 (처음부터)</button>
+      <button class="shuffle-btn" style="width:100%;" onclick="shuffleQuiz()">🔀 섞기</button>
     </div>
     <div class="quiz-options" id="quizOpts"></div>
     <div class="quiz-score-bar" id="quizScoreBar"></div>
