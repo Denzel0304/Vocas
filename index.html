@@ -496,6 +496,13 @@ function buildBookList() {
 }
 
 function selectBook(i) {
+  // 브라우저 오디오 정책 해제 — 첫 터치(gesture) 시점에 워밍업
+  if (window.speechSynthesis) {
+    const warmup = new SpeechSynthesisUtterance('');
+    warmup.volume = 0;
+    window.speechSynthesis.speak(warmup);
+  }
+
   currentBook = books[i];
   VOCAB       = currentBook.words;
   byDay       = {};
