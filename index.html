@@ -247,7 +247,7 @@
 <!-- ② Day 선택 -->
 <div class="screen" id="screen-day">
   <div class="page-header" style="position:relative;">
-    <button class="back-btn" onclick="goTo('screen-books')">←</button>
+    <button class="back-btn" onclick="showScreen('screen-books')">←</button>
     <h1 id="dayBookTitle">단어장</h1>
     <p id="daySubtitle">Day를 선택하세요</p>
   </div>
@@ -257,7 +257,7 @@
 <!-- ③ 모드 선택 -->
 <div class="screen" id="screen-mode">
   <div class="page-header" style="position:relative;">
-    <button class="back-btn" onclick="goTo('screen-day')">←</button>
+    <button class="back-btn" onclick="showScreen('screen-day')">←</button>
     <h1 id="modeTitle">Day 1</h1>
     <p id="modeSubtitle">모드를 선택하세요</p>
   </div>
@@ -372,7 +372,7 @@
 <!-- ⑦ 결과 -->
 <div class="screen" id="screen-result">
   <div class="page-header" style="position:relative; padding-top:52px;">
-    <button class="back-btn" onclick="goTo('screen-mode')">←</button>
+    <button class="back-btn" onclick="showScreen('screen-mode')">←</button>
     <h1>결과</h1>
   </div>
   <div class="result-wrap">
@@ -387,7 +387,7 @@
       <div class="wrong-list" id="wrongList"></div>
     </div>
     <div class="result-btns">
-      <button class="ctrl-btn secondary" onclick="_goBack('screen-mode')" style="flex:1;">← 다시 선택</button>
+      <button class="ctrl-btn secondary" onclick="showScreen('screen-mode')" style="flex:1;">← 다시 선택</button>
       <button class="ctrl-btn primary" id="retryBtn" onclick="startMode('retry')" style="flex:1;display:none;">🔁 틀린것 재도전</button>
     </div>
   </div>
@@ -576,7 +576,7 @@ function startMode(mode) {
   else if (mode === 'quiz')  { renderQuiz();  goTo('screen-quiz'); }
 }
 
-function endStudy() { clearBlink(); _goBack('screen-mode'); }
+function endStudy() { clearBlink(); showScreen('screen-mode'); }
 
 // ════════════════════════════════════════
 //  FLASH
@@ -762,63 +762,42 @@ function speak() {
   window.speechSynthesis.speak(u);
 }
 // ════════════════════════════════════════
-//  NAVIGATION — History API 기반
-//  단계: books → day → mode → study/quiz → result
-//  뒤로가기 3~4번이면 books(메인)까지, 거기서 한 번 더 누르면 사이트 나감
+//  NAVIGATION
+//  pushState 2개만 유지:
+//    [0] books (단어장 목록)  ← 여기서 뒤로가기 = 사이트 나감
+//    [1] day   (Day 선택)     ← 여기서 뒤로가기 = books로
+//  mode / 공부 / 결과는 스택 없이 화면만 교체
 // ════════════════════════════════════════
 
-// 화면 전환 시 history.pushState로 스택 1개만 쌓음
-// 단, 같은 화면 반복 push는 안 함
-let _currentScreen = '';
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo(0, 0);
+}
 
+// 단어장 목록으로 (pushState[0] 보정)
 function goTo(id) {
   clearBlink();
-  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-  document.getElementById(id).classList.add('active');
-  window.scrollTo(0, 0);
-
-  // 같은 화면이면 push 안 함
-  if (_currentScreen !== id) {
-    history.pushState({ screen: id }, '', '');
-    _currentScreen = id;
+  showScreen(id);
+  if (id === 'screen-books') {
+    // 최하단 스택: 여기서 한 번 더 뒤로 = 사이트 나감
+    history.replaceState({ screen: 'screen-books' }, '');
+  } else if (id === 'screen-day') {
+    // Day 선택 진입 시 스택 1개 추가
+    history.pushState({ screen: 'screen-day' }, '');
   }
+  // mode, flash, blink, quiz, result 는 스택 안 쌓음
 }
 
-// 뒤로가기(popstate) 처리 — 각 화면에서 "논리적 이전 단계"로 이동
 window.addEventListener('popstate', (e) => {
-  const active = document.querySelector('.screen.active');
-  if (!active) return;
-  const cur = active.id;
-
-  // study/quiz 화면 → mode 선택으로
-  if (['screen-flash','screen-blink','screen-quiz','screen-result'].includes(cur)) {
+  const screen = e.state?.screen;
+  if (screen === 'screen-books') {
+    // Day 선택에서 뒤로 → 단어장 목록
     clearBlink();
-    _goBack('screen-mode');
+    showScreen('screen-books');
   }
-  // mode 선택 → day 선택으로
-  else if (cur === 'screen-mode') {
-    _goBack('screen-day');
-  }
-  // day 선택 → 단어장 목록으로
-  else if (cur === 'screen-day') {
-    _goBack('screen-books');
-  }
-  // 단어장 목록(메인) → 브라우저가 알아서 사이트 나감 (스택 소진)
-  else {
-    // books 화면에서는 history 스택이 없으므로 자연스럽게 나감
-    history.back();
-  }
+  // screen-books 아래 스택이 없으면 브라우저가 알아서 사이트 나감
 });
-
-// 내부 뒤로이동 (history에 새 항목 안 쌓고 화면만 교체)
-function _goBack(id) {
-  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-  document.getElementById(id).classList.add('active');
-  window.scrollTo(0, 0);
-  _currentScreen = id;
-  // popstate로 이미 하나 빠졌으니 현재 위치 보정
-  history.pushState({ screen: id }, '', '');
-}
 
 // INIT
 loadAllBooks();
