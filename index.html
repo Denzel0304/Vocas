@@ -678,6 +678,7 @@ function endStudy() {
   clearBlink(); goToMode();
 }
 function goToMode() {
+  buildDayGrid();
   const unknownCnt = byDay[currentDay].filter(c => unknownSet.has(c.word)).length;
   document.getElementById('retryModeCard').classList.toggle('mode-disabled', unknownCnt === 0);
   showScreen('screen-mode');
