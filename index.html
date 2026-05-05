@@ -681,7 +681,12 @@ function resetProgress() {
 }
 function closeResetModal(fromPopstate) {
   document.getElementById('resetModal').classList.remove('active');
-  if (!fromPopstate) history.go(-1);
+  // 버튼으로 닫을 때: pushState로 쌓은 스택을 _navLock 보호 하에 조용히 제거
+  if (!fromPopstate) {
+    _navLock = true;
+    history.go(-1);
+    setTimeout(() => { _navLock = false; }, 100);
+  }
 }
 function confirmReset() {
   knownSet.clear(); unknownSet.clear();
