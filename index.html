@@ -455,6 +455,7 @@ async function loadAllBooks() {
   }
 
   document.getElementById('loading').classList.add('hidden');
+  initHistory();  // 최하단 스택 세팅
 
   if (books.length === 0) {
     document.getElementById('bookSubtitle').textContent = 'word01.json 파일을 찾을 수 없습니다';
@@ -763,11 +764,31 @@ function speak() {
 }
 // ════════════════════════════════════════
 //  NAVIGATION
-//  pushState 2개만 유지:
-//    [0] books (단어장 목록)  ← 여기서 뒤로가기 = 사이트 나감
-//    [1] day   (Day 선택)     ← 여기서 뒤로가기 = books로
-//  mode / 공부 / 결과는 스택 없이 화면만 교체
+//
+//  스택 구조 (pushState 4개):
+//    books → day → mode → study
+//
+//  뒤로가기:
+//    study/result → mode → day → books → 사이트나감
+//
+//  규칙:
+//  - 앞으로 진입할 때만 pushState
+//  - 같은 레벨 내 이동(mode↔study, mode↔result)은 replaceState
+//  - 뒤로가기(popstate)는 state.screen 보고 화면 복원
 // ════════════════════════════════════════
+
+// 레벨 정의: 숫자 클수록 깊은 단계
+const SCREEN_LEVEL = {
+  'screen-books': 0,
+  'screen-day':   1,
+  'screen-mode':  2,
+  'screen-flash': 3,
+  'screen-blink': 3,
+  'screen-quiz':  3,
+  'screen-result':3,
+};
+
+let _navLock = false; // popstate 중 goTo 재진입 방지
 
 function showScreen(id) {
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
@@ -775,28 +796,59 @@ function showScreen(id) {
   window.scrollTo(0, 0);
 }
 
-// 단어장 목록으로 (pushState[0] 보정)
 function goTo(id) {
   clearBlink();
   showScreen(id);
-  if (id === 'screen-books') {
-    // 최하단 스택: 여기서 한 번 더 뒤로 = 사이트 나감
-    history.replaceState({ screen: 'screen-books' }, '');
-  } else if (id === 'screen-day') {
-    // Day 선택 진입 시 스택 1개 추가
-    history.pushState({ screen: 'screen-day' }, '');
+
+  const curState = history.state?.screen;
+  const curLevel = SCREEN_LEVEL[curState] ?? -1;
+  const newLevel = SCREEN_LEVEL[id] ?? 0;
+
+  if (newLevel > curLevel) {
+    // 더 깊은 단계 → 스택 쌓기
+    history.pushState({ screen: id }, '');
+  } else {
+    // 같은 레벨이거나 앞으로 돌아오는 경우 → 현재 스택 교체
+    history.replaceState({ screen: id }, '');
   }
-  // mode, flash, blink, quiz, result 는 스택 안 쌓음
+}
+
+// 앱 진입 시 최하단 스택 초기화
+function initHistory() {
+  history.replaceState({ screen: 'screen-books' }, '');
 }
 
 window.addEventListener('popstate', (e) => {
-  const screen = e.state?.screen;
-  if (screen === 'screen-books') {
-    // Day 선택에서 뒤로 → 단어장 목록
-    clearBlink();
-    showScreen('screen-books');
+  if (_navLock) return;
+  _navLock = true;
+
+  clearBlink();
+  const target = e.state?.screen;
+
+  // 어느 단계에서 뒤로 눌렀는지 현재 화면 기준으로 판단
+  const active = document.querySelector('.screen.active')?.id;
+
+  if (!target) {
+    // 스택 바닥 → 사이트 나감 (브라우저 기본 동작)
+    _navLock = false;
+    return;
   }
-  // screen-books 아래 스택이 없으면 브라우저가 알아서 사이트 나감
+
+  // 한 단계 위로 이동
+  const backMap = {
+    'screen-day':   'screen-books',
+    'screen-mode':  'screen-day',
+    'screen-flash': 'screen-mode',
+    'screen-blink': 'screen-mode',
+    'screen-quiz':  'screen-mode',
+    'screen-result':'screen-mode',
+  };
+
+  const dest = backMap[active] || 'screen-books';
+  showScreen(dest);
+  history.replaceState({ screen: dest }, '');
+
+  _navLock = false;
 });
 
 // INIT
