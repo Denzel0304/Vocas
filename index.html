@@ -130,6 +130,18 @@
   /* CARD AREA */
   .card-area { padding: 14px 16px; }
   .tag { font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 99px; display: inline-block; margin-bottom: 6px; }
+  /* 깜빡이/퀴즈 카드 안의 태그 — 가로 바 형태 */
+  .blink-card .tag, .quiz-q-card .tag {
+    display: block; width: 100%; padding: 5px 14px; font-size: 12px; border-radius: 99px;
+  }
+  /* 플래시카드 Day 태그 — 카드 위에 가로 바 형태 (깜빡이/퀴즈 동일 스타일) */
+  .flash-day-bar {
+    display: flex; align-items: center;
+    background: #E8F6FF; border-radius: 99px;
+    padding: 5px 14px; margin-bottom: 10px;
+    font-size: 12px; font-weight: 700; color: #2E86AB;
+    width: 100%;
+  }
 
   /* FLIP CARD */
   .flip-card { perspective: 1000px; height: 190px; cursor: pointer; margin-bottom: 12px; user-select: none; }
@@ -166,16 +178,16 @@
   }
   .sound-btn:active { transform: scale(0.88); background: var(--sky-mid); }
 
-  .action-row { display: flex; gap: 12px; margin-top: 4px; }
+  .action-row { display: flex; gap: 12px; margin-top: 16px; }
   .btn-know, .btn-dunno {
-    flex: 1; padding: 13px 8px; border: none; border-radius: var(--radius-sm);
+    flex: 1; padding: 14px 8px; border: none; border-radius: var(--radius-sm);
     font-family: inherit; font-size: 14px; font-weight: 700;
     cursor: pointer; transition: all 0.15s; user-select: none;
   }
   .btn-know  { background: var(--mint);  color: #1a6b46; }
   .btn-dunno { background: var(--coral); color: #8b2a1e; }
   .btn-know:active, .btn-dunno:active { transform: scale(0.95); }
-  .nav-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-top: 10px; }
+  .nav-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-top: 16px; }
   .shuffle-btn {
     background: var(--lavender); border: none; border-radius: var(--radius-sm);
     padding: 10px 16px; font-family: inherit; font-size: 13px; font-weight: 700;
@@ -198,15 +210,15 @@
   .blink-word    { font-size: 34px; font-weight: 800; color: var(--sky-dark); word-break: break-word; text-align:center; }
   .blink-meaning { font-size: 22px; font-weight: 700; color: var(--sky-dark); opacity: 0; transition: opacity 0.5s; margin-top: 8px; text-align:center; }
   .blink-meaning.show { opacity: 1; }
-  .blink-controls { display: flex; gap: 10px; }
+  .blink-controls { display: flex; gap: 10px; margin-top: 16px; }
   .ctrl-btn {
-    flex: 1; padding: 12px 8px; border: none; border-radius: var(--radius-sm);
+    flex: 1; padding: 14px 8px; border: none; border-radius: var(--radius-sm);
     font-family: inherit; font-size: 14px; font-weight: 700; cursor: pointer; transition: all 0.15s; user-select: none;
   }
   .ctrl-btn.primary   { background: var(--sky-deep); color: #fff; }
   .ctrl-btn.secondary { background: var(--sky-light); color: var(--sky-dark); border: 2px solid var(--sky-mid); }
   .ctrl-btn:active { transform: scale(0.95); }
-  .speed-row { display: flex; align-items: center; gap: 10px; margin-top: 10px; }
+  .speed-row { display: flex; align-items: center; gap: 10px; margin-top: 14px; }
   .speed-row label { font-size: 13px; color: var(--text-muted); font-weight: 600; white-space: nowrap; }
   .speed-row input[type=range] { flex: 1; accent-color: var(--sky-deep); }
   .speed-val { font-size: 13px; font-weight: 700; color: var(--sky-dark); white-space: nowrap; min-width: 32px; text-align: right; }
@@ -214,17 +226,17 @@
   /* 2. QUIZ - 카드 높이 대폭 축소 */
   .quiz-q-card {
     background: var(--white); border-radius: var(--radius);
-    box-shadow: var(--shadow); padding: 14px 18px; margin-bottom: 10px;
+    box-shadow: var(--shadow); padding: 10px 18px; margin-bottom: 8px;
     display: flex; flex-direction: column;
     position: relative;
   }
   /* 6. 퀴즈 카드 내부: 단어 중앙, 발음 좌하단 */
-  .quiz-center { display:flex; flex-direction:column; align-items:center; padding: 6px 0 4px; }
-  .quiz-word    { font-size: 30px; font-weight: 800; color: var(--sky-dark); word-break: break-word; text-align:center; }
-  .quiz-options { display: flex; flex-direction: column; gap: 8px; }
+  .quiz-center { display:flex; flex-direction:column; align-items:center; padding: 2px 0 2px; }
+  .quiz-word    { font-size: 26px; font-weight: 800; color: var(--sky-dark); word-break: break-word; text-align:center; }
+  .quiz-options { display: flex; flex-direction: column; gap: 6px; }
   .quiz-opt {
     background: var(--white); border: 2px solid var(--sky-mid);
-    border-radius: var(--radius-sm); padding: 12px 14px;
+    border-radius: var(--radius-sm); padding: 10px 14px;
     font-family: inherit; font-size: 14px; font-weight: 600;
     cursor: pointer; text-align: left; transition: all 0.15s; color: var(--text); user-select: none;
   }
@@ -313,10 +325,10 @@
     </div>
   </div>
   <div class="card-area">
+    <div class="flash-day-bar" id="flashDayBar">Day 1</div>
     <div class="flip-card" onclick="flipCard()">
       <div class="flip-inner" id="flipInner">
         <div class="flip-front">
-          <span class="tag" id="flashTag" style="background:#E8F6FF;color:#2E86AB;"></span>
           <div class="card-center">
             <div class="flash-word" id="flashWord"></div>
             <div class="flash-hint">탭하면 뜻이 나와요</div>
@@ -324,7 +336,6 @@
           <button class="sound-btn" onclick="event.stopPropagation();speak()">🔊</button>
         </div>
         <div class="flip-back">
-          <span class="tag" id="flashTagB" style="background:#c5e8f7;color:#2E86AB;"></span>
           <div class="card-center">
             <div class="flash-meaning" id="flashMeaning"></div>
             <div class="flash-word-sm" id="flashWordSm"></div>
@@ -369,7 +380,7 @@
       <button class="ctrl-btn primary" id="blinkPlayBtn" onclick="toggleBlink()">▶ 재생</button>
       <button class="ctrl-btn secondary" onclick="blinkStep(1)">다음 →</button>
     </div>
-    <div style="display:flex; gap:10px; margin-top:10px;">
+    <div style="display:flex; gap:10px; margin-top:14px;">
       <button class="shuffle-btn" style="flex:1;" onclick="shuffleBlink()">🔀 섞기</button>
     </div>
     <div class="speed-row">
@@ -632,8 +643,7 @@ function endStudy() { clearBlink(); showScreen('screen-mode'); }
 function renderFlash() {
   const c = cards[cardIdx]; if (!c) return;
   currentWord = c.word;
-  document.getElementById('flashTag').textContent     = `Day ${c.day}`;
-  document.getElementById('flashTagB').textContent    = `Day ${c.day}`;
+  document.getElementById('flashDayBar').textContent   = `Day ${c.day}`;
   document.getElementById('flashWord').textContent    = c.word;
   document.getElementById('flashMeaning').textContent = c.meaning;
   document.getElementById('flashWordSm').textContent  = c.word;
