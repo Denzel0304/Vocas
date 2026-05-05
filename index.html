@@ -191,7 +191,7 @@
   /* BLINK */
   .blink-card {
     background: var(--white); border-radius: var(--radius);
-    box-shadow: var(--shadow); padding: 16px 18px;
+    box-shadow: var(--shadow); padding: 8px 18px;
     min-height: 150px;
     display: flex; flex-direction: column;
     margin-bottom: 12px; position: relative;
@@ -216,21 +216,33 @@
   .speed-row input[type=range] { flex: 1; accent-color: var(--sky-deep); }
   .speed-val { font-size: 13px; font-weight: 700; color: var(--sky-dark); white-space: nowrap; min-width: 32px; text-align: right; }
 
+  /* QUIZ 화면 — 스크롤 없이 100vh 꽉 채움 */
+  #screen-quiz {
+    display: none; flex-direction: column;
+    height: 100vh; overflow: hidden;
+  }
+  #screen-quiz.active { display: flex; }
+  #screen-quiz .card-area {
+    flex: 1; display: flex; flex-direction: column;
+    padding: 12px 16px; overflow: hidden;
+  }
+
   /* QUIZ - 카드 높이 최소화 */
   .quiz-q-card {
     background: var(--white); border-radius: var(--radius);
     box-shadow: var(--shadow); padding: 8px 18px; margin-bottom: 0;
     display: flex; flex-direction: column;
-    position: relative;
+    position: relative; flex-shrink: 0;
   }
   .quiz-center { display:flex; flex-direction:column; align-items:center; padding: 2px 0 2px; }
   .quiz-word    { font-size: 24px; font-weight: 800; color: var(--sky-dark); word-break: break-word; text-align:center; }
-  .quiz-options { display: flex; flex-direction: column; gap: 10px; margin-top: 20px; }
+  .quiz-options { display: flex; flex-direction: column; gap: 8px; flex: 1; justify-content: flex-start; }
   .quiz-opt {
     background: var(--white); border: 2px solid var(--sky-mid);
-    border-radius: var(--radius-sm); padding: 12px 14px;
+    border-radius: var(--radius-sm); padding: 11px 14px;
     font-family: inherit; font-size: 14px; font-weight: 600;
     cursor: pointer; text-align: left; transition: all 0.15s; color: var(--text); user-select: none;
+    flex-shrink: 0;
   }
   .quiz-opt:active  { background: var(--sky-light); }
   .quiz-opt.correct { background: #d4f5e4; border-color: #27ae60; color: #1a6b46; }
@@ -402,11 +414,11 @@
       </div>
       <button class="sound-btn" onclick="speak()">🔊</button>
     </div>
-    <div style="margin-top:20px; margin-bottom:0;">
+    <div style="margin-top:14px; margin-bottom:14px; flex-shrink:0;">
       <button class="shuffle-btn" style="width:100%;" onclick="shuffleQuiz()">🔀 섞기</button>
     </div>
     <div class="quiz-options" id="quizOpts"></div>
-    <div class="quiz-score-bar" id="quizScoreBar"></div>
+    <div class="quiz-score-bar" id="quizScoreBar" style="margin-top:10px; margin-bottom:10px; flex-shrink:0;"></div>
   </div>
 </div>
 
