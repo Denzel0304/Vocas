@@ -677,9 +677,11 @@ function startMode(mode) {
 function endStudy() { clearBlink(); showScreen('screen-mode'); }
 function resetProgress() {
   document.getElementById('resetModal').classList.add('active');
+  history.pushState({ screen: history.state?.screen, modal: 'reset' }, '');
 }
-function closeResetModal() {
+function closeResetModal(fromPopstate) {
   document.getElementById('resetModal').classList.remove('active');
+  if (!fromPopstate) history.go(-1);
 }
 function confirmReset() {
   knownSet.clear(); unknownSet.clear();
@@ -963,6 +965,11 @@ function initHistory() {
 }
 
 window.addEventListener('popstate', (e) => {
+  // 모달이 열려있으면 모달만 닫고 끝 — 기존 네비게이션 로직 건드리지 않음
+  if (document.getElementById('resetModal').classList.contains('active')) {
+    closeResetModal(true);
+    return;
+  }
   if (_navLock) return;
   _navLock = true;
 
