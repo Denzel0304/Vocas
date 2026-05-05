@@ -656,7 +656,7 @@ function renderFlash() {
   document.getElementById('flipInner').classList.remove('flipped');
   setPB('flash', cardIdx + 1, cards.length);
 }
-function flipCard() { document.getElementById('flipInner').classList.toggle('flipped'); }
+function flipCard() { document.getElementById('flipInner').classList.toggle('flipped'); speak(); }
 function markCard(known) {
   const c = cards[cardIdx];
   if (known) { knownSet.add(c.word); unknownSet.delete(c.word); }
@@ -717,7 +717,7 @@ function scheduleBlink() {
     document.getElementById('blinkTimer').textContent = '';
     document.getElementById('blinkMeaning').classList.add('show');
     blinkTimer = setTimeout(() => {
-      if (cardIdx + 1 < cards.length) { cardIdx++; renderBlink(); scheduleBlink(); }
+      if (cardIdx + 1 < cards.length) { cardIdx++; renderBlink(); speak(); scheduleBlink(); }
       else { clearBlink(); showResult(); }
     }, blinkDelay * 600);
   }, blinkDelay * 1000);
@@ -726,7 +726,7 @@ function clearBlink() { clearTimeout(blinkTimer); clearInterval(blinkCountInterv
 function toggleBlink() {
   blinkPlaying = !blinkPlaying;
   document.getElementById('blinkPlayBtn').textContent = blinkPlaying ? '⏸ 일시정지' : '▶ 재생';
-  if (blinkPlaying) scheduleBlink(); else clearBlink();
+  if (blinkPlaying) { speak(); scheduleBlink(); } else clearBlink();
 }
 function blinkStep(dir) {
   clearBlink();
@@ -779,6 +779,7 @@ function renderQuiz() {
     btn.onclick = () => answerQuiz(btn, opt, c.meaning, c.word);
     cont.appendChild(btn);
   });
+  speak();
 }
 function answerQuiz(btn, chosen, correct, word) {
   if (quizAnswered) return; quizAnswered = true;
