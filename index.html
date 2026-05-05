@@ -7,268 +7,221 @@
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
   :root {
-    --sky: #87CEEB;
     --sky-light: #E8F6FF;
-    --sky-mid: #B8E0F7;
-    --sky-deep: #5BB3D9;
-    --sky-dark: #2E86AB;
-    --mint: #A8E6CF;
-    --peach: #FFD3B6;
-    --lavender: #D4B8E0;
-    --yellow: #FFF3B0;
-    --coral: #FFB5A7;
-    --white: #FFFFFF;
-    --text: #2C3E50;
-    --text-muted: #7F8C9A;
-    --radius: 20px;
+    --sky-mid:   #B8E0F7;
+    --sky-deep:  #5BB3D9;
+    --sky-dark:  #2E86AB;
+    --mint:      #A8E6CF;
+    --lavender:  #D4B8E0;
+    --coral:     #FFB5A7;
+    --white:     #FFFFFF;
+    --text:      #2C3E50;
+    --text-muted:#7F8C9A;
+    --radius:    20px;
     --radius-sm: 12px;
-    --shadow: 0 8px 30px rgba(135,206,235,0.35);
+    --shadow:    0 8px 30px rgba(135,206,235,0.35);
     --shadow-sm: 0 4px 16px rgba(135,206,235,0.25);
   }
   * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
-  html, body { height: 100%; }
   body {
     font-family: 'Nunito', 'Noto Sans KR', sans-serif;
     background: linear-gradient(160deg, #E8F6FF 0%, #D4EDFF 50%, #C8E8FF 100%);
-    min-height: 100vh;
-    color: var(--text);
-    overflow-x: hidden;
+    min-height: 100vh; color: var(--text); overflow-x: hidden;
   }
 
-  /* ── LOADING ── */
+  /* LOADING */
   #loading {
-    position: fixed; inset: 0;
-    display: flex; flex-direction: column;
+    position: fixed; inset: 0; display: flex; flex-direction: column;
     align-items: center; justify-content: center;
-    background: linear-gradient(160deg, #E8F6FF, #C8E8FF);
-    z-index: 999;
-    gap: 16px;
+    background: linear-gradient(160deg, #E8F6FF, #C8E8FF); z-index: 999; gap: 14px;
   }
-  #loading .logo { font-size: 52px; }
-  #loading .loading-text { font-size: 16px; color: var(--sky-dark); font-weight: 600; }
   #loading.hidden { display: none; }
+  #loading .logo { font-size: 52px; }
+  #loading .loading-text { font-size: 15px; color: var(--sky-dark); font-weight: 600; }
 
-  /* ── SCREENS ── */
-  .screen { display: none; padding-bottom: 40px; animation: fadeIn 0.25s ease; }
+  /* SCREENS */
+  .screen { display: none; padding-bottom: 40px; animation: fadeIn 0.22s ease; }
   .screen.active { display: block; }
-  @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes fadeIn { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:translateY(0); } }
 
-  /* ── COMMON HEADER ── */
+  /* PAGE HEADER */
   .page-header {
-    background: linear-gradient(135deg, var(--sky-deep) 0%, var(--sky-dark) 100%);
-    padding: 48px 20px 28px;
-    border-radius: 0 0 36px 36px;
-    position: relative;
+    background: linear-gradient(135deg, var(--sky-deep), var(--sky-dark));
+    padding: 48px 20px 26px; border-radius: 0 0 36px 36px;
+    position: relative; text-align: center;
   }
-  .page-header h1 { font-size: 26px; font-weight: 800; color: #fff; text-align: center; }
-  .page-header p { font-size: 13px; color: rgba(255,255,255,0.8); text-align: center; margin-top: 4px; }
+  .page-header h1 { font-size: 21px; font-weight: 800; color: #fff; line-height: 1.3; }
+  .page-header p  { font-size: 13px; color: rgba(255,255,255,0.8); margin-top: 4px; }
   .back-btn {
     position: absolute; top: 14px; left: 14px;
-    background: rgba(255,255,255,0.22);
-    border: none; border-radius: 50%;
-    width: 38px; height: 38px;
-    font-size: 18px; cursor: pointer; color: #fff;
+    background: rgba(255,255,255,0.22); border: none; border-radius: 50%;
+    width: 38px; height: 38px; font-size: 18px; cursor: pointer; color: #fff;
     display: flex; align-items: center; justify-content: center;
-    transition: background 0.15s;
   }
   .back-btn:active { background: rgba(255,255,255,0.4); }
 
-  /* ── DAY SELECT ── */
-  .day-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 12px;
-    padding: 24px 16px;
+  /* BOOK LIST */
+  .book-list { padding: 20px 16px; display: flex; flex-direction: column; gap: 14px; }
+  .book-card {
+    background: var(--white); border-radius: var(--radius);
+    box-shadow: var(--shadow-sm); padding: 18px 20px;
+    cursor: pointer; display: flex; align-items: center; gap: 16px;
+    transition: all 0.18s; border: 2px solid transparent; user-select: none;
   }
+  .book-card:active { transform: scale(0.97); border-color: var(--sky-mid); }
+  .book-icon {
+    width: 52px; height: 52px; border-radius: 16px; background: var(--sky-light);
+    display: flex; align-items: center; justify-content: center; font-size: 26px; flex-shrink: 0;
+  }
+  .book-info h3 { font-size: 16px; font-weight: 800; color: var(--text); }
+  .book-info p  { font-size: 12px; color: var(--text-muted); margin-top: 3px; }
+  .book-arrow   { margin-left: auto; font-size: 22px; color: var(--sky-mid); flex-shrink: 0; }
+
+  /* DAY GRID */
+  .day-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; padding: 20px 16px; }
   .day-card {
-    background: var(--white);
-    border-radius: var(--radius-sm);
-    padding: 16px 8px;
-    text-align: center;
-    cursor: pointer;
-    box-shadow: var(--shadow-sm);
-    transition: all 0.2s;
-    border: 2px solid transparent;
-    user-select: none;
+    background: var(--white); border-radius: var(--radius-sm);
+    padding: 14px 6px; text-align: center; cursor: pointer;
+    box-shadow: var(--shadow-sm); transition: all 0.18s;
+    border: 2px solid transparent; user-select: none;
   }
   .day-card:active { transform: scale(0.95); }
-  .day-card.done { border-color: var(--sky-mid); background: var(--sky-light); }
-  .day-num { font-size: 18px; font-weight: 800; color: var(--sky-dark); }
+  .day-card.done   { border-color: var(--sky-mid); background: var(--sky-light); }
+  .day-num   { font-size: 17px; font-weight: 800; color: var(--sky-dark); }
   .day-count { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
-  .day-stars { font-size: 12px; color: #F4C430; margin-top: 4px; letter-spacing: 1px; }
+  .day-stars { font-size: 12px; color: #F4C430; margin-top: 4px; }
 
-  /* ── MODE SELECT ── */
-  .mode-grid { padding: 24px 16px; display: flex; flex-direction: column; gap: 14px; }
+  /* MODE SELECT */
+  .mode-grid { padding: 20px 16px; display: flex; flex-direction: column; gap: 12px; }
   .mode-card {
-    background: var(--white);
-    border-radius: var(--radius);
-    padding: 18px 20px;
-    cursor: pointer;
-    box-shadow: var(--shadow-sm);
-    display: flex; align-items: center; gap: 16px;
-    transition: all 0.2s;
-    border: 2px solid transparent;
-    user-select: none;
+    background: var(--white); border-radius: var(--radius);
+    padding: 16px 18px; cursor: pointer; box-shadow: var(--shadow-sm);
+    display: flex; align-items: center; gap: 14px;
+    transition: all 0.18s; border: 2px solid transparent; user-select: none;
   }
   .mode-card:active { transform: scale(0.97); border-color: var(--sky-mid); }
   .mode-icon {
-    width: 52px; height: 52px; border-radius: 16px;
+    width: 50px; height: 50px; border-radius: 14px;
     display: flex; align-items: center; justify-content: center;
-    font-size: 26px; flex-shrink: 0;
+    font-size: 24px; flex-shrink: 0;
   }
-  .mode-card h3 { font-size: 16px; font-weight: 700; }
-  .mode-card p { font-size: 12px; color: var(--text-muted); margin-top: 2px; line-height: 1.4; }
-  .mode-disabled { opacity: 0.4; pointer-events: none; }
+  .mode-card h3 { font-size: 15px; font-weight: 700; }
+  .mode-card p  { font-size: 12px; color: var(--text-muted); margin-top: 2px; line-height: 1.4; }
+  .mode-disabled { opacity: 0.38; pointer-events: none; }
 
-  /* ── PROGRESS BAR ── */
-  .progress-wrap { margin: 0 0 6px; }
+  /* PROGRESS */
+  .progress-wrap { margin-bottom: 6px; }
   .progress-bar-bg { background: rgba(255,255,255,0.3); border-radius: 99px; height: 6px; }
-  .progress-bar { background: #fff; border-radius: 99px; height: 6px; transition: width 0.4s ease; }
-  .progress-label { color: rgba(255,255,255,0.9); font-size: 12px; font-weight: 700; text-align: right; margin-top: 4px; }
+  .progress-bar    { background: #fff; border-radius: 99px; height: 6px; transition: width 0.4s; }
+  .progress-label  { color: rgba(255,255,255,0.9); font-size: 12px; font-weight: 700; text-align: right; margin-top: 4px; }
 
-  /* ── FLASH CARD ── */
-  .card-area { padding: 20px 16px; }
-  .tag {
-    font-size: 11px; font-weight: 700;
-    padding: 3px 10px; border-radius: 99px;
-    display: inline-block; margin-bottom: 10px;
-  }
-  .flip-card { perspective: 1000px; height: 230px; cursor: pointer; margin-bottom: 16px; user-select: none; }
+  /* CARD AREA */
+  .card-area { padding: 18px 16px; }
+  .tag { font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 99px; display: inline-block; margin-bottom: 10px; }
+
+  /* FLIP CARD */
+  .flip-card { perspective: 1000px; height: 230px; cursor: pointer; margin-bottom: 14px; user-select: none; }
   .flip-inner {
     position: relative; width: 100%; height: 100%;
-    transform-style: preserve-3d;
-    transition: transform 0.5s cubic-bezier(0.4,0,0.2,1);
+    transform-style: preserve-3d; transition: transform 0.5s cubic-bezier(0.4,0,0.2,1);
   }
   .flip-inner.flipped { transform: rotateY(180deg); }
   .flip-front, .flip-back {
     position: absolute; width: 100%; height: 100%;
-    backface-visibility: hidden;
-    border-radius: var(--radius);
-    display: flex; flex-direction: column;
-    align-items: center; justify-content: center;
-    box-shadow: var(--shadow); padding: 24px;
+    backface-visibility: hidden; border-radius: var(--radius);
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    box-shadow: var(--shadow); padding: 22px;
   }
   .flip-front { background: var(--white); }
-  .flip-back { transform: rotateY(180deg); background: linear-gradient(135deg, #dff2fc, #c5e8f7); }
-  .flash-word { font-size: 36px; font-weight: 800; color: var(--sky-dark); text-align: center; word-break: break-word; }
-  .flash-hint { font-size: 12px; color: var(--text-muted); margin-top: 6px; }
+  .flip-back  { transform: rotateY(180deg); background: linear-gradient(135deg,#dff2fc,#c5e8f7); }
+  .flash-word    { font-size: 34px; font-weight: 800; color: var(--sky-dark); text-align: center; word-break: break-word; }
+  .flash-hint    { font-size: 12px; color: var(--text-muted); margin-top: 6px; }
   .flash-meaning { font-size: 28px; font-weight: 700; color: var(--sky-dark); text-align: center; word-break: break-all; }
-  .flash-word-sm { font-size: 15px; color: var(--text-muted); margin-top: 6px; }
+  .flash-word-sm { font-size: 14px; color: var(--text-muted); margin-top: 6px; }
   .sound-btn {
     background: var(--sky-light); border: none; border-radius: 50%;
     width: 42px; height: 42px; cursor: pointer;
     display: flex; align-items: center; justify-content: center;
-    font-size: 20px; margin-top: 10px; transition: all 0.15s;
-    flex-shrink: 0;
+    font-size: 20px; margin-top: 10px; transition: all 0.15s; flex-shrink: 0;
   }
   .sound-btn:active { transform: scale(0.88); background: var(--sky-mid); }
   .action-row { display: flex; gap: 12px; margin-top: 4px; }
   .btn-know, .btn-dunno {
-    flex: 1; padding: 16px 8px; border: none; border-radius: var(--radius-sm);
+    flex: 1; padding: 15px 8px; border: none; border-radius: var(--radius-sm);
     font-family: inherit; font-size: 14px; font-weight: 700;
     cursor: pointer; transition: all 0.15s; user-select: none;
   }
-  .btn-know { background: var(--mint); color: #1a6b46; }
+  .btn-know  { background: var(--mint);  color: #1a6b46; }
   .btn-dunno { background: var(--coral); color: #8b2a1e; }
   .btn-know:active, .btn-dunno:active { transform: scale(0.95); }
   .nav-row { display: flex; align-items: center; justify-content: space-between; margin-top: 12px; }
   .nav-btn {
     background: var(--white); border: 2px solid var(--sky-mid);
-    border-radius: 50%; width: 44px; height: 44px;
-    font-size: 20px; cursor: pointer;
-    display: flex; align-items: center; justify-content: center;
-    transition: all 0.15s;
+    border-radius: 50%; width: 44px; height: 44px; font-size: 20px;
+    cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.15s;
   }
   .nav-btn:active { background: var(--sky-mid); transform: scale(0.92); }
   .shuffle-btn {
     background: var(--lavender); border: none; border-radius: var(--radius-sm);
-    padding: 10px 18px; font-family: inherit; font-size: 13px; font-weight: 700;
+    padding: 10px 16px; font-family: inherit; font-size: 13px; font-weight: 700;
     color: #5a3a7e; cursor: pointer; transition: all 0.15s;
   }
   .shuffle-btn:active { transform: scale(0.95); }
 
-  /* ── BLINK ── */
+  /* BLINK */
   .blink-card {
     background: var(--white); border-radius: var(--radius);
-    box-shadow: var(--shadow); padding: 30px 20px;
+    box-shadow: var(--shadow); padding: 28px 20px;
     text-align: center; min-height: 210px;
-    display: flex; flex-direction: column;
-    align-items: center; justify-content: center;
-    margin-bottom: 16px; position: relative;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    margin-bottom: 14px; position: relative;
   }
-  .blink-timer {
-    position: absolute; top: 12px; right: 16px;
-    font-size: 30px; font-weight: 800; color: var(--sky-mid);
-    line-height: 1; transition: color 0.3s;
-  }
+  .blink-timer { position: absolute; top: 12px; right: 16px; font-size: 28px; font-weight: 800; color: var(--sky-mid); line-height: 1; transition: color 0.3s; }
   .blink-timer.urgent { color: var(--coral); }
-  .blink-word { font-size: 38px; font-weight: 800; color: var(--sky-dark); word-break: break-word; }
-  .blink-meaning {
-    font-size: 26px; font-weight: 700; color: var(--sky-dark);
-    opacity: 0; transition: opacity 0.5s; margin-top: 10px;
-  }
+  .blink-word    { font-size: 36px; font-weight: 800; color: var(--sky-dark); word-break: break-word; }
+  .blink-meaning { font-size: 24px; font-weight: 700; color: var(--sky-dark); opacity: 0; transition: opacity 0.5s; margin-top: 10px; }
   .blink-meaning.show { opacity: 1; }
   .blink-controls { display: flex; gap: 10px; }
   .ctrl-btn {
     flex: 1; padding: 14px 8px; border: none; border-radius: var(--radius-sm);
-    font-family: inherit; font-size: 14px; font-weight: 700;
-    cursor: pointer; transition: all 0.15s; user-select: none;
+    font-family: inherit; font-size: 14px; font-weight: 700; cursor: pointer; transition: all 0.15s; user-select: none;
   }
-  .ctrl-btn.primary { background: var(--sky-deep); color: #fff; }
+  .ctrl-btn.primary   { background: var(--sky-deep); color: #fff; }
   .ctrl-btn.secondary { background: var(--sky-light); color: var(--sky-dark); border: 2px solid var(--sky-mid); }
   .ctrl-btn:active { transform: scale(0.95); }
-  .speed-row {
-    display: flex; align-items: center; gap: 10px;
-    margin-top: 14px; padding: 0 2px;
-  }
+  .speed-row { display: flex; align-items: center; gap: 10px; margin-top: 14px; }
   .speed-row label { font-size: 13px; color: var(--text-muted); font-weight: 600; white-space: nowrap; }
-  .speed-row input[type=range] { flex: 1; accent-color: var(--sky-deep); height: 4px; }
-  .speed-val { font-size: 13px; font-weight: 700; color: var(--sky-dark); white-space: nowrap; min-width: 30px; text-align: right; }
+  .speed-row input[type=range] { flex: 1; accent-color: var(--sky-deep); }
+  .speed-val { font-size: 13px; font-weight: 700; color: var(--sky-dark); white-space: nowrap; min-width: 32px; text-align: right; }
 
-  /* ── QUIZ ── */
+  /* QUIZ */
   .quiz-q-card {
     background: var(--white); border-radius: var(--radius);
-    box-shadow: var(--shadow); padding: 28px 20px 20px;
-    text-align: center; margin-bottom: 16px;
+    box-shadow: var(--shadow); padding: 26px 18px 18px; text-align: center; margin-bottom: 14px;
   }
-  .quiz-word { font-size: 34px; font-weight: 800; color: var(--sky-dark); word-break: break-word; }
+  .quiz-word    { font-size: 32px; font-weight: 800; color: var(--sky-dark); word-break: break-word; }
   .quiz-options { display: flex; flex-direction: column; gap: 10px; }
   .quiz-opt {
     background: var(--white); border: 2px solid var(--sky-mid);
-    border-radius: var(--radius-sm); padding: 16px 14px;
+    border-radius: var(--radius-sm); padding: 15px 14px;
     font-family: inherit; font-size: 15px; font-weight: 600;
-    cursor: pointer; text-align: left; transition: all 0.15s;
-    color: var(--text); user-select: none;
+    cursor: pointer; text-align: left; transition: all 0.15s; color: var(--text); user-select: none;
   }
-  .quiz-opt:active { background: var(--sky-light); }
+  .quiz-opt:active  { background: var(--sky-light); }
   .quiz-opt.correct { background: #d4f5e4; border-color: #27ae60; color: #1a6b46; }
-  .quiz-opt.wrong { background: #fde8e8; border-color: #e74c3c; color: #8b2a1e; }
-  .quiz-score-bar {
-    font-size: 13px; color: var(--text-muted); font-weight: 600;
-    text-align: center; margin-top: 10px;
-  }
+  .quiz-opt.wrong   { background: #fde8e8; border-color: #e74c3c; color: #8b2a1e; }
+  .quiz-score-bar   { font-size: 13px; color: var(--text-muted); font-weight: 600; text-align: center; margin-top: 10px; }
 
-  /* ── RESULT ── */
-  .result-wrap { padding: 20px 16px; }
-  .result-card {
-    background: var(--white); border-radius: var(--radius);
-    box-shadow: var(--shadow); padding: 36px 24px;
-    text-align: center; margin-bottom: 16px;
-  }
-  .result-emoji { font-size: 56px; margin-bottom: 8px; }
-  .result-pct { font-size: 52px; font-weight: 800; color: var(--sky-dark); line-height: 1; }
-  .result-msg { font-size: 18px; font-weight: 700; color: var(--text); margin-top: 8px; }
-  .result-detail { font-size: 13px; color: var(--text-muted); margin-top: 12px; line-height: 1.7; }
-  .result-btns { display: flex; gap: 12px; }
-
-  /* ── WRONG LIST ── */
-  .wrong-list { display: flex; flex-direction: column; gap: 8px; margin-top: 12px; }
-  .wrong-item {
-    background: var(--white); border-radius: var(--radius-sm);
-    padding: 12px 16px; display: flex; justify-content: space-between;
-    align-items: center; box-shadow: var(--shadow-sm);
-    font-size: 14px;
-  }
+  /* RESULT */
+  .result-wrap { padding: 18px 16px; }
+  .result-card { background: var(--white); border-radius: var(--radius); box-shadow: var(--shadow); padding: 32px 22px; text-align: center; margin-bottom: 14px; }
+  .result-emoji  { font-size: 52px; margin-bottom: 8px; }
+  .result-pct    { font-size: 50px; font-weight: 800; color: var(--sky-dark); line-height: 1; }
+  .result-msg    { font-size: 17px; font-weight: 700; color: var(--text); margin-top: 8px; }
+  .result-detail { font-size: 13px; color: var(--text-muted); margin-top: 10px; line-height: 1.8; }
+  .result-btns   { display: flex; gap: 12px; }
+  .wrong-list    { display: flex; flex-direction: column; gap: 8px; margin-top: 10px; }
+  .wrong-item { background: var(--white); border-radius: var(--radius-sm); padding: 11px 15px; display: flex; justify-content: space-between; align-items: center; box-shadow: var(--shadow-sm); font-size: 14px; }
   .wrong-item .ww { font-weight: 700; color: var(--sky-dark); }
   .wrong-item .wm { color: var(--text-muted); }
 </style>
@@ -278,24 +231,34 @@
 <!-- LOADING -->
 <div id="loading">
   <div class="logo">📖</div>
-  <div class="loading-text">단어 불러오는 중...</div>
+  <div class="loading-text" id="loadingText">단어장 불러오는 중...</div>
 </div>
 
-<!-- ① DAY SELECT -->
-<div class="screen" id="screen-day">
+<!-- ① 단어장 선택 -->
+<div class="screen" id="screen-books">
   <div class="page-header" style="padding-top:52px;">
     <h1>📖 단어 암기장</h1>
-    <p id="totalInfo">Day를 선택해서 시작하세요</p>
+    <p id="bookSubtitle">단어장을 선택하세요</p>
+  </div>
+  <div class="book-list" id="bookList"></div>
+</div>
+
+<!-- ② Day 선택 -->
+<div class="screen" id="screen-day">
+  <div class="page-header" style="position:relative;">
+    <button class="back-btn" onclick="goTo('screen-books')">←</button>
+    <h1 id="dayBookTitle">단어장</h1>
+    <p id="daySubtitle">Day를 선택하세요</p>
   </div>
   <div class="day-grid" id="dayGrid"></div>
 </div>
 
-<!-- ② MODE SELECT -->
+<!-- ③ 모드 선택 -->
 <div class="screen" id="screen-mode">
   <div class="page-header" style="position:relative;">
     <button class="back-btn" onclick="goTo('screen-day')">←</button>
     <h1 id="modeTitle">Day 1</h1>
-    <p id="modeSubtitle">단어 개수 로딩 중</p>
+    <p id="modeSubtitle">모드를 선택하세요</p>
   </div>
   <div class="mode-grid">
     <div class="mode-card" onclick="startMode('flash')">
@@ -317,7 +280,7 @@
   </div>
 </div>
 
-<!-- ③ FLASH CARD -->
+<!-- ④ 플래시카드 -->
 <div class="screen" id="screen-flash">
   <div class="page-header" style="position:relative;">
     <button class="back-btn" onclick="endStudy()">←</button>
@@ -327,7 +290,7 @@
     </div>
   </div>
   <div class="card-area">
-    <div class="flip-card" id="flipCard" onclick="flipCard()">
+    <div class="flip-card" onclick="flipCard()">
       <div class="flip-inner" id="flipInner">
         <div class="flip-front">
           <span class="tag" id="flashTag" style="background:#E8F6FF;color:#2E86AB;"></span>
@@ -355,7 +318,7 @@
   </div>
 </div>
 
-<!-- ④ BLINK -->
+<!-- ⑤ 깜빡이 -->
 <div class="screen" id="screen-blink">
   <div class="page-header" style="position:relative;">
     <button class="back-btn" onclick="endStudy()">←</button>
@@ -384,7 +347,7 @@
   </div>
 </div>
 
-<!-- ⑤ QUIZ -->
+<!-- ⑥ 퀴즈 -->
 <div class="screen" id="screen-quiz">
   <div class="page-header" style="position:relative;">
     <button class="back-btn" onclick="endStudy()">←</button>
@@ -405,7 +368,7 @@
   </div>
 </div>
 
-<!-- ⑥ RESULT -->
+<!-- ⑦ 결과 -->
 <div class="screen" id="screen-result">
   <div class="page-header" style="position:relative; padding-top:52px;">
     <button class="back-btn" onclick="goTo('screen-mode')">←</button>
@@ -414,16 +377,15 @@
   <div class="result-wrap">
     <div class="result-card">
       <div class="result-emoji" id="resEmoji">🎉</div>
-      <div class="result-pct" id="resPct"></div>
-      <div class="result-msg" id="resMsg"></div>
+      <div class="result-pct"  id="resPct"></div>
+      <div class="result-msg"  id="resMsg"></div>
       <div class="result-detail" id="resDetail"></div>
     </div>
-    <!-- 틀린 단어 목록 -->
-    <div id="wrongSection" style="display:none;">
+    <div id="wrongSection" style="display:none; margin-bottom:14px;">
       <div style="font-size:14px;font-weight:700;color:var(--text);margin-bottom:8px;">❌ 틀린 단어 목록</div>
       <div class="wrong-list" id="wrongList"></div>
     </div>
-    <div class="result-btns" style="margin-top:16px;">
+    <div class="result-btns">
       <button class="ctrl-btn secondary" onclick="goTo('screen-mode')" style="flex:1;">← 다시 선택</button>
       <button class="ctrl-btn primary" id="retryBtn" onclick="startMode('retry')" style="flex:1;display:none;">🔁 틀린것 재도전</button>
     </div>
@@ -434,72 +396,117 @@
 // ════════════════════════════════════════
 //  STATE
 // ════════════════════════════════════════
-let VOCAB = [];          // 전체 단어 배열
-let byDay = {};          // { 1: [...], 2: [...] }
-let allMeanings = [];    // 퀴즈 오답 풀
+let books       = [];   // [{filename, title, words}]
+let currentBook = null;
+let VOCAB       = [];
+let byDay       = {};
+let allMeanings = [];
 
 let currentDay  = 1;
-let currentMode = 'flash';
 let cards       = [];
 let cardIdx     = 0;
+let knownSet    = new Set();
+let unknownSet  = new Set();
 
-let knownSet   = new Set();
-let unknownSet = new Set();
+let blinkTimer        = null;
+let blinkCountInterval= null;
+let blinkDelay        = 3.0;
+let blinkPlaying      = true;
 
-// Blink
-let blinkTimer    = null;
-let blinkInterval = null;
-let blinkDelay    = 3.0;
-let blinkPlaying  = true;
-
-// Quiz
 let quizScore    = 0;
 let quizAnswered = false;
+let currentWord  = '';
 
-// TTS
-let currentWord = '';
-
-// Progress persist
-const SAVE_KEY = 'vocab_saves_v2';
+const SAVE_KEY = 'vocab_saves_v3';
 let saves = {};
 try { saves = JSON.parse(localStorage.getItem(SAVE_KEY) || '{}'); } catch(e) {}
 
+function saveKey(day) { return `${currentBook.filename}_${day}`; }
 function saveProg() {
-  saves[currentDay] = { known: [...knownSet], unknown: [...unknownSet] };
+  saves[saveKey(currentDay)] = { known: [...knownSet], unknown: [...unknownSet] };
   localStorage.setItem(SAVE_KEY, JSON.stringify(saves));
+}
+function loadProg(day) {
+  const sv = saves[saveKey(day)] || {};
+  return { known: new Set(sv.known || []), unknown: new Set(sv.unknown || []) };
 }
 
 // ════════════════════════════════════════
-//  LOAD words.json
+//  LOAD — word01.json, word02.json ... 한계 없이
 // ════════════════════════════════════════
-async function loadWords() {
-  try {
-    const res = await fetch('words.json');
-    if (!res.ok) throw new Error('fetch fail');
-    VOCAB = await res.json();
-  } catch(e) {
-    // fallback: 샘플 내장
-    VOCAB = [
-      {day:1,word:"apple",meaning:"사과"},{day:1,word:"banana",meaning:"바나나"},
-      {day:1,word:"cherry",meaning:"체리"},{day:1,word:"dragon fruit",meaning:"용과"},
-      {day:1,word:"emerge",meaning:"나타나다"},{day:1,word:"fierce",meaning:"사나운"},
-      {day:1,word:"genuine",meaning:"진짜의"},{day:1,word:"humble",meaning:"겸손한"},
-      {day:2,word:"imagine",meaning:"상상하다"},{day:2,word:"journey",meaning:"여행"},
-      {day:2,word:"knowledge",meaning:"지식"},{day:2,word:"liberty",meaning:"자유"},
-      {day:2,word:"magnificent",meaning:"웅장한"},{day:2,word:"navigate",meaning:"탐색하다"},
-      {day:2,word:"observe",meaning:"관찰하다"},{day:2,word:"precious",meaning:"소중한"},
-    ];
+async function loadAllBooks() {
+  books = [];
+  let num = 1;
+  while (true) {
+    const filename = `word${String(num).padStart(2, '0')}.json`;
+    document.getElementById('loadingText').textContent = `${filename} 불러오는 중...`;
+    try {
+      const res = await fetch(filename);
+      if (!res.ok) break;
+      const json = await res.json();
+      books.push({
+        filename: filename.replace('.json', ''),
+        title:    json.title || filename,
+        words:    json.words || [],
+      });
+      num++;
+    } catch(e) { break; }
   }
 
-  // 그룹화
-  byDay = {};
+  document.getElementById('loading').classList.add('hidden');
+
+  if (books.length === 0) {
+    document.getElementById('bookSubtitle').textContent = 'word01.json 파일을 찾을 수 없습니다';
+    goTo('screen-books');
+    return;
+  }
+  buildBookList();
+  goTo('screen-books');
+}
+
+// ════════════════════════════════════════
+//  단어장 목록
+// ════════════════════════════════════════
+const BOOK_ICONS = ['📘','📗','📙','📕','📓','📔','📒','📃','📑','🗒️'];
+
+function buildBookList() {
+  const list = document.getElementById('bookList');
+  list.innerHTML = '';
+  document.getElementById('bookSubtitle').textContent = `단어장 ${books.length}개`;
+
+  books.forEach((book, i) => {
+    const days       = [...new Set(book.words.map(w => w.day))].length;
+    const totalWords = book.words.length;
+
+    const card = document.createElement('div');
+    card.className = 'book-card';
+    card.innerHTML = `
+      <div class="book-icon">${BOOK_ICONS[i % BOOK_ICONS.length]}</div>
+      <div class="book-info">
+        <h3>${book.title}</h3>
+        <p>Day ${days}일 · 총 ${totalWords}단어</p>
+      </div>
+      <div class="book-arrow">›</div>
+    `;
+    card.onclick = () => selectBook(i);
+    list.appendChild(card);
+  });
+}
+
+function selectBook(i) {
+  currentBook = books[i];
+  VOCAB       = currentBook.words;
+  byDay       = {};
   VOCAB.forEach(v => {
     if (!byDay[v.day]) byDay[v.day] = [];
     byDay[v.day].push(v);
   });
   allMeanings = VOCAB.map(v => v.meaning);
 
-  document.getElementById('loading').classList.add('hidden');
+  document.getElementById('dayBookTitle').textContent = currentBook.title;
+  const days = Object.keys(byDay).length;
+  document.getElementById('daySubtitle').textContent = `Day ${days}일 · ${VOCAB.length}단어`;
+
   buildDayGrid();
   goTo('screen-day');
 }
@@ -509,17 +516,19 @@ async function loadWords() {
 // ════════════════════════════════════════
 function buildDayGrid() {
   const grid = document.getElementById('dayGrid');
-  const days = Object.keys(byDay).sort((a,b) => +a - +b);
+  const days = Object.keys(byDay).sort((a, b) => +a - +b);
   grid.innerHTML = '';
+
   days.forEach(d => {
     const words = byDay[d];
-    const sv = saves[d];
-    const knownCnt = sv?.known?.length || 0;
+    const { known } = loadProg(+d);
+    const knownCnt  = words.filter(w => known.has(w.word)).length;
     const pct = words.length ? knownCnt / words.length : 0;
+
     let stars = '☆☆☆';
-    if (pct >= 0.8)  stars = '★★★';
+    if      (pct >= 0.8) stars = '★★★';
     else if (pct >= 0.5) stars = '★★☆';
-    else if (pct > 0) stars = '★☆☆';
+    else if (pct >  0)   stars = '★☆☆';
 
     const card = document.createElement('div');
     card.className = 'day-card' + (pct > 0 ? ' done' : '');
@@ -531,46 +540,37 @@ function buildDayGrid() {
     card.onclick = () => selectDay(+d);
     grid.appendChild(card);
   });
-
-  const total = VOCAB.length;
-  const days_cnt = days.length;
-  document.getElementById('totalInfo').textContent = `총 ${days_cnt}일 · ${total}개 단어`;
 }
 
 function selectDay(d) {
   currentDay = d;
-  const sv = saves[d] || {};
-  knownSet   = new Set(sv.known   || []);
-  unknownSet = new Set(sv.unknown || []);
+  const prog = loadProg(d);
+  knownSet   = prog.known;
+  unknownSet = prog.unknown;
 
-  document.getElementById('modeTitle').textContent   = `Day ${d}`;
-  document.getElementById('modeSubtitle').textContent = `${byDay[d].length}단어 · 모드를 선택하세요`;
+  document.getElementById('modeTitle').textContent    = `${currentBook.title}`;
+  document.getElementById('modeSubtitle').textContent = `Day ${d} · ${byDay[d].length}단어 · 모드를 선택하세요`;
 
-  const unknownCnt = [...unknownSet].filter(w => byDay[d].some(c => c.word === w)).length;
-  const retryCard = document.getElementById('retryModeCard');
-  retryCard.classList.toggle('mode-disabled', unknownCnt === 0);
+  const unknownCnt = byDay[d].filter(c => unknownSet.has(c.word)).length;
+  document.getElementById('retryModeCard').classList.toggle('mode-disabled', unknownCnt === 0);
 
   goTo('screen-mode');
 }
 
 // ════════════════════════════════════════
-//  MODE START
+//  MODE
 // ════════════════════════════════════════
 function startMode(mode) {
-  currentMode = mode;
   clearBlink();
-
   if (mode === 'retry') {
     cards = byDay[currentDay].filter(c => unknownSet.has(c.word));
     if (!cards.length) { alert('아직 틀린 단어가 없어요!'); return; }
   } else {
     cards = [...byDay[currentDay]];
   }
+  cardIdx = 0; quizScore = 0;
 
-  cardIdx    = 0;
-  quizScore  = 0;
-
-  if (mode === 'flash' || mode === 'retry') { renderFlash(); goTo('screen-flash'); }
+  if      (mode === 'flash' || mode === 'retry') { renderFlash(); goTo('screen-flash'); }
   else if (mode === 'blink') { startBlink(); goTo('screen-blink'); }
   else if (mode === 'quiz')  { renderQuiz();  goTo('screen-quiz'); }
 }
@@ -578,63 +578,50 @@ function startMode(mode) {
 function endStudy() { clearBlink(); goTo('screen-mode'); }
 
 // ════════════════════════════════════════
-//  FLASH CARD
+//  FLASH
 // ════════════════════════════════════════
 function renderFlash() {
-  const c = cards[cardIdx];
-  if (!c) return;
+  const c = cards[cardIdx]; if (!c) return;
   currentWord = c.word;
-  document.getElementById('flashTag').textContent  = `Day ${c.day}`;
-  document.getElementById('flashTagB').textContent = `Day ${c.day}`;
+  document.getElementById('flashTag').textContent     = `Day ${c.day}`;
+  document.getElementById('flashTagB').textContent    = `Day ${c.day}`;
   document.getElementById('flashWord').textContent    = c.word;
   document.getElementById('flashMeaning').textContent = c.meaning;
   document.getElementById('flashWordSm').textContent  = c.word;
   document.getElementById('flipInner').classList.remove('flipped');
   setPB('flash', cardIdx + 1, cards.length);
 }
-
-function flipCard() {
-  document.getElementById('flipInner').classList.toggle('flipped');
-}
-
+function flipCard() { document.getElementById('flipInner').classList.toggle('flipped'); }
 function markCard(known) {
   const c = cards[cardIdx];
   if (known) { knownSet.add(c.word); unknownSet.delete(c.word); }
   else       { unknownSet.add(c.word); knownSet.delete(c.word); }
-  saveProg();
-  moveFlash(1);
+  saveProg(); moveFlash(1);
 }
-
 function moveFlash(dir) {
   const next = cardIdx + dir;
   if (next >= cards.length) { showResult(); return; }
   if (next < 0) return;
-  cardIdx = next;
-  renderFlash();
+  cardIdx = next; renderFlash();
 }
-
 function shuffleCards() {
   for (let i = cards.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
     [cards[i], cards[j]] = [cards[j], cards[i]];
   }
-  cardIdx = 0;
-  renderFlash();
+  cardIdx = 0; renderFlash();
 }
 
 // ════════════════════════════════════════
-//  BLINK MODE
+//  BLINK
 // ════════════════════════════════════════
 function startBlink() {
   blinkPlaying = true;
   document.getElementById('blinkPlayBtn').textContent = '⏸ 일시정지';
-  renderBlink();
-  scheduleBlink();
+  renderBlink(); scheduleBlink();
 }
-
 function renderBlink() {
-  const c = cards[cardIdx];
-  if (!c) return;
+  const c = cards[cardIdx]; if (!c) return;
   currentWord = c.word;
   document.getElementById('blinkTag').textContent     = `Day ${c.day}`;
   document.getElementById('blinkWord').textContent    = c.word;
@@ -644,111 +631,76 @@ function renderBlink() {
   document.getElementById('blinkTimer').classList.remove('urgent');
   setPB('blink', cardIdx + 1, cards.length);
 }
-
-let blinkCountInterval = null;
 function scheduleBlink() {
-  clearBlink();
-  if (!blinkPlaying) return;
-
+  clearBlink(); if (!blinkPlaying) return;
   let t = blinkDelay;
-  document.getElementById('blinkTimer').textContent = t.toFixed(0);
-  document.getElementById('blinkTimer').classList.remove('urgent');
-
-  // 카운트다운
+  document.getElementById('blinkTimer').textContent = Math.ceil(t);
   blinkCountInterval = setInterval(() => {
     t -= 0.5;
     const el = document.getElementById('blinkTimer');
-    el.textContent = Math.max(0, t).toFixed(0);
+    el.textContent = Math.max(0, Math.ceil(t));
     if (t <= 1.5) el.classList.add('urgent');
   }, 500);
-
-  // 뜻 공개
   blinkTimer = setTimeout(() => {
     clearInterval(blinkCountInterval);
     document.getElementById('blinkTimer').textContent = '';
     document.getElementById('blinkMeaning').classList.add('show');
-
-    // 다음 카드
     blinkTimer = setTimeout(() => {
       if (cardIdx + 1 < cards.length) { cardIdx++; renderBlink(); scheduleBlink(); }
       else { clearBlink(); showResult(); }
     }, blinkDelay * 600);
   }, blinkDelay * 1000);
 }
-
-function clearBlink() {
-  clearTimeout(blinkTimer);
-  clearInterval(blinkCountInterval);
-}
-
+function clearBlink() { clearTimeout(blinkTimer); clearInterval(blinkCountInterval); }
 function toggleBlink() {
   blinkPlaying = !blinkPlaying;
   document.getElementById('blinkPlayBtn').textContent = blinkPlaying ? '⏸ 일시정지' : '▶ 재생';
   if (blinkPlaying) scheduleBlink(); else clearBlink();
 }
-
 function blinkStep(dir) {
   clearBlink();
   const next = cardIdx + dir;
   if (next < 0 || next >= cards.length) return;
-  cardIdx = next;
-  renderBlink();
+  cardIdx = next; renderBlink();
   if (blinkPlaying) scheduleBlink();
 }
-
 function updateSpeed(v) {
   blinkDelay = parseFloat(v);
   document.getElementById('speedVal').textContent = blinkDelay.toFixed(1) + '초';
 }
 
 // ════════════════════════════════════════
-//  QUIZ MODE
+//  QUIZ
 // ════════════════════════════════════════
 function renderQuiz() {
-  const c = cards[cardIdx];
-  if (!c) return;
-  currentWord  = c.word;
-  quizAnswered = false;
-
-  document.getElementById('quizTag').textContent  = `Day ${c.day}`;
-  document.getElementById('quizWord').textContent = c.word;
+  const c = cards[cardIdx]; if (!c) return;
+  currentWord = c.word; quizAnswered = false;
+  document.getElementById('quizTag').textContent      = `Day ${c.day}`;
+  document.getElementById('quizWord').textContent     = c.word;
   document.getElementById('quizScoreBar').textContent = `점수: ${quizScore} / ${cardIdx}`;
   setPB('quiz', cardIdx + 1, cards.length);
 
-  // 오답 3개
   const others = allMeanings.filter(m => m !== c.meaning);
-  const wrong  = shuffle(others).slice(0, 3);
-  const opts   = shuffle([...wrong, c.meaning]);
-
-  const cont = document.getElementById('quizOpts');
+  const opts   = shuffle([...shuffle(others).slice(0, 3), c.meaning]);
+  const cont   = document.getElementById('quizOpts');
   cont.innerHTML = '';
   opts.forEach(opt => {
     const btn = document.createElement('button');
-    btn.className = 'quiz-opt';
-    btn.textContent = opt;
+    btn.className = 'quiz-opt'; btn.textContent = opt;
     btn.onclick = () => answerQuiz(btn, opt, c.meaning, c.word);
     cont.appendChild(btn);
   });
 }
-
 function answerQuiz(btn, chosen, correct, word) {
-  if (quizAnswered) return;
-  quizAnswered = true;
-
+  if (quizAnswered) return; quizAnswered = true;
   document.querySelectorAll('.quiz-opt').forEach(b => {
     if (b.textContent === correct) b.classList.add('correct');
     else if (b === btn && chosen !== correct) b.classList.add('wrong');
   });
-
-  if (chosen === correct) {
-    quizScore++;
-    knownSet.add(word); unknownSet.delete(word);
-  } else {
-    unknownSet.add(word); knownSet.delete(word);
-  }
+  if (chosen === correct) { quizScore++; knownSet.add(word); unknownSet.delete(word); }
+  else                    { unknownSet.add(word); knownSet.delete(word); }
   saveProg();
   document.getElementById('quizScoreBar').textContent = `점수: ${quizScore} / ${cardIdx + 1}`;
-
   setTimeout(() => {
     if (cardIdx + 1 < cards.length) { cardIdx++; renderQuiz(); }
     else showResult();
@@ -759,20 +711,18 @@ function answerQuiz(btn, chosen, correct, word) {
 //  RESULT
 // ════════════════════════════════════════
 function showResult() {
-  const total   = cards.length;
+  const total    = cards.length;
   const knownCnt = cards.filter(c => knownSet.has(c.word)).length;
-  const pct     = total ? Math.round(knownCnt / total * 100) : 0;
-
-  const emoji = pct >= 80 ? '🎉' : pct >= 50 ? '😊' : '💪';
-  const msg   = pct >= 80 ? '완벽해요!' : pct >= 50 ? '잘하고 있어요!' : '다시 도전해봐요!';
+  const pct      = total ? Math.round(knownCnt / total * 100) : 0;
+  const emoji    = pct >= 80 ? '🎉' : pct >= 50 ? '😊' : '💪';
+  const msg      = pct >= 80 ? '완벽해요!' : pct >= 50 ? '잘하고 있어요!' : '다시 도전해봐요!';
 
   document.getElementById('resEmoji').textContent  = emoji;
   document.getElementById('resPct').textContent    = pct + '%';
   document.getElementById('resMsg').textContent    = msg;
-  document.getElementById('resDetail').innerHTML =
+  document.getElementById('resDetail').innerHTML   =
     `✅ 아는 단어: <strong>${knownCnt}개</strong><br>❌ 모르는 단어: <strong>${total - knownCnt}개</strong>`;
 
-  // 틀린 단어 목록
   const wrongWords = cards.filter(c => unknownSet.has(c.word));
   const ws = document.getElementById('wrongSection');
   if (wrongWords.length > 0) {
@@ -785,9 +735,7 @@ function showResult() {
     ws.style.display = 'none';
     document.getElementById('retryBtn').style.display = 'none';
   }
-
-  buildDayGrid();
-  goTo('screen-result');
+  buildDayGrid(); goTo('screen-result');
 }
 
 // ════════════════════════════════════════
@@ -797,7 +745,6 @@ function setPB(mode, cur, total) {
   document.getElementById(mode + 'PB').style.width = (cur / total * 100).toFixed(1) + '%';
   document.getElementById(mode + 'PL').textContent  = `${cur} / ${total}`;
 }
-
 function shuffle(arr) {
   const a = [...arr];
   for (let i = a.length - 1; i > 0; i--) {
@@ -806,7 +753,6 @@ function shuffle(arr) {
   }
   return a;
 }
-
 function speak() {
   if (!window.speechSynthesis) return;
   window.speechSynthesis.cancel();
@@ -814,17 +760,14 @@ function speak() {
   u.lang = 'en-US'; u.rate = 0.85;
   window.speechSynthesis.speak(u);
 }
-
 function goTo(id) {
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
   document.getElementById(id).classList.add('active');
   window.scrollTo(0, 0);
 }
 
-// ════════════════════════════════════════
-//  INIT
-// ════════════════════════════════════════
-loadWords();
+// INIT
+loadAllBooks();
 </script>
 </body>
 </html>
