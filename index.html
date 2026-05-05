@@ -732,7 +732,7 @@ function blinkStep(dir) {
   clearBlink();
   const next = cardIdx + dir;
   if (next < 0 || next >= cards.length) return;
-  cardIdx = next; renderBlink();
+  cardIdx = next; renderBlink(); speak();
   if (blinkPlaying) scheduleBlink();
 }
 function updateSpeed(v) {
