@@ -230,19 +230,20 @@
   /* QUIZ - 카드 높이 최소화 */
   .quiz-q-card {
     background: var(--white); border-radius: var(--radius);
-    box-shadow: var(--shadow); padding: 8px 18px; margin-bottom: 0;
+    box-shadow: var(--shadow); padding: 8px 18px 10px; margin-bottom: 0;
     display: flex; flex-direction: column;
     position: relative; flex-shrink: 0;
   }
-  .quiz-center { display:flex; flex-direction:column; align-items:center; padding: 2px 0 2px; }
+  .quiz-center { display:flex; flex-direction:column; align-items:center; padding: 4px 0 0; }
   .quiz-word    { font-size: 24px; font-weight: 800; color: var(--sky-dark); word-break: break-word; text-align:center; }
-  .quiz-options { display: flex; flex-direction: column; gap: 8px; flex: 1; justify-content: flex-start; }
+  /* 스피커와 "이 단어의 뜻은?" 같은 줄에 가로 배치 */
+  .quiz-subtitle-row { display:flex; align-items:center; justify-content:center; gap:8px; margin-top:4px; }
+  .quiz-options { display: flex; flex-direction: column; gap: 8px; flex-shrink: 0; }
   .quiz-opt {
     background: var(--white); border: 2px solid var(--sky-mid);
     border-radius: var(--radius-sm); padding: 11px 14px;
     font-family: inherit; font-size: 14px; font-weight: 600;
     cursor: pointer; text-align: left; transition: all 0.15s; color: var(--text); user-select: none;
-    flex-shrink: 0;
   }
   .quiz-opt:active  { background: var(--sky-light); }
   .quiz-opt.correct { background: #d4f5e4; border-color: #27ae60; color: #1a6b46; }
@@ -410,15 +411,17 @@
       <span class="tag" id="quizTag" style="background:#A8E6CF;color:#1a6b46;"></span>
       <div class="quiz-center">
         <div class="quiz-word" id="quizWord"></div>
-        <div style="font-size:12px;color:var(--text-muted);margin-top:3px;">이 단어의 뜻은?</div>
+        <div class="quiz-subtitle-row">
+          <div style="font-size:12px;color:var(--text-muted);">이 단어의 뜻은?</div>
+          <button class="sound-btn" onclick="speak()" style="margin-top:0; width:28px; height:28px; font-size:14px;">🔊</button>
+        </div>
       </div>
-      <button class="sound-btn" onclick="speak()">🔊</button>
     </div>
-    <div style="margin-top:14px; margin-bottom:14px; flex-shrink:0;">
+    <div style="margin-top:14px; margin-bottom:12px; flex-shrink:0;">
       <button class="shuffle-btn" style="width:100%;" onclick="shuffleQuiz()">🔀 섞기</button>
     </div>
     <div class="quiz-options" id="quizOpts"></div>
-    <div class="quiz-score-bar" id="quizScoreBar" style="margin-top:10px; margin-bottom:10px; flex-shrink:0;"></div>
+    <div class="quiz-score-bar" id="quizScoreBar" style="margin-top:12px; margin-bottom:6px; flex-shrink:0;"></div>
   </div>
 </div>
 
