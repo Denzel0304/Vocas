@@ -79,7 +79,7 @@
   .book-arrow   { margin-left: auto; font-size: 22px; color: var(--sky-mid); flex-shrink: 0; }
 
   /* DAY GRID */
-  .day-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; padding: 20px 16px; }
+  .day-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; padding: 20px 16px 40px; }
   .day-card {
     background: var(--white); border-radius: var(--radius-sm);
     padding: 14px 6px; text-align: center; cursor: pointer;
@@ -111,10 +111,11 @@
   .mode-disabled { opacity: 0.38; pointer-events: none; }
 
   /* PROGRESS */
-  .progress-wrap { margin-bottom: 6px; }
+  .progress-wrap { margin-bottom: 6px; padding-top: 8px; }
   .progress-bar-bg { background: rgba(255,255,255,0.3); border-radius: 99px; height: 6px; }
   .progress-bar    { background: #fff; border-radius: 99px; height: 6px; transition: width 0.4s; }
   .progress-label  { color: rgba(255,255,255,0.9); font-size: 12px; font-weight: 700; text-align: right; margin-top: 4px; }
+  .study-header { padding: 14px 20px 22px; }  /* back-btn 공간 확보 */
 
   /* CARD AREA */
   .card-area { padding: 18px 16px; }
@@ -155,13 +156,7 @@
   .btn-know  { background: var(--mint);  color: #1a6b46; }
   .btn-dunno { background: var(--coral); color: #8b2a1e; }
   .btn-know:active, .btn-dunno:active { transform: scale(0.95); }
-  .nav-row { display: flex; align-items: center; justify-content: space-between; margin-top: 12px; }
-  .nav-btn {
-    background: var(--white); border: 2px solid var(--sky-mid);
-    border-radius: 50%; width: 44px; height: 44px; font-size: 20px;
-    cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.15s;
-  }
-  .nav-btn:active { background: var(--sky-mid); transform: scale(0.92); }
+  .nav-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-top: 12px; }
   .shuffle-btn {
     background: var(--lavender); border: none; border-radius: var(--radius-sm);
     padding: 10px 16px; font-family: inherit; font-size: 13px; font-weight: 700;
@@ -264,7 +259,7 @@
   <div class="mode-grid">
     <div class="mode-card" onclick="startMode('flash')">
       <div class="mode-icon" style="background:#E8F6FF;">🃏</div>
-      <div><h3>플래시카드</h3><p>탭하면 뒤집혀요 · 알았어요/모르겠어요 분류</p></div>
+      <div><h3>플래시카드 모드</h3><p>탭하면 뒤집혀요 · 알았어요/모르겠어요 분류</p></div>
     </div>
     <div class="mode-card" onclick="startMode('blink')">
       <div class="mode-icon" style="background:#FFF3B0;">⚡</div>
@@ -283,9 +278,9 @@
 
 <!-- ④ 플래시카드 -->
 <div class="screen" id="screen-flash">
-  <div class="page-header" style="position:relative;">
+  <div class="page-header" style="position:relative; padding: 52px 20px 22px;">
     <button class="back-btn" onclick="endStudy()">←</button>
-    <div class="progress-wrap">
+    <div class="progress-wrap" style="padding-top:0;">
       <div class="progress-bar-bg"><div class="progress-bar" id="flashPB" style="width:0%"></div></div>
       <div class="progress-label" id="flashPL"></div>
     </div>
@@ -312,18 +307,18 @@
       <button class="btn-know"  onclick="markCard(true)">✅ 알았어요!</button>
     </div>
     <div class="nav-row">
-      <button class="nav-btn" onclick="moveFlash(-1)">←</button>
+      <button class="ctrl-btn secondary" style="flex:1;" onclick="moveFlash(-1)">← 이전</button>
       <button class="shuffle-btn" onclick="shuffleCards()">🔀 섞기</button>
-      <button class="nav-btn" onclick="moveFlash(1)">→</button>
+      <button class="ctrl-btn secondary" style="flex:1;" onclick="moveFlash(1)">다음 →</button>
     </div>
   </div>
 </div>
 
 <!-- ⑤ 깜빡이 -->
 <div class="screen" id="screen-blink">
-  <div class="page-header" style="position:relative;">
+  <div class="page-header" style="position:relative; padding: 52px 20px 22px;">
     <button class="back-btn" onclick="endStudy()">←</button>
-    <div class="progress-wrap">
+    <div class="progress-wrap" style="padding-top:0;">
       <div class="progress-bar-bg"><div class="progress-bar" id="blinkPB" style="width:0%"></div></div>
       <div class="progress-label" id="blinkPL"></div>
     </div>
@@ -337,8 +332,11 @@
     </div>
     <div class="blink-controls">
       <button class="ctrl-btn secondary" onclick="blinkStep(-1)">← 이전</button>
-      <button class="ctrl-btn primary" id="blinkPlayBtn" onclick="toggleBlink()">⏸ 일시정지</button>
+      <button class="ctrl-btn primary" id="blinkPlayBtn" onclick="toggleBlink()">▶ 재생</button>
       <button class="ctrl-btn secondary" onclick="blinkStep(1)">다음 →</button>
+    </div>
+    <div style="display:flex; gap:10px; margin-top:10px;">
+      <button class="shuffle-btn" style="flex:1;" onclick="shuffleBlink()">🔀 섞기</button>
     </div>
     <div class="speed-row">
       <label>표시 시간</label>
@@ -350,9 +348,9 @@
 
 <!-- ⑥ 퀴즈 -->
 <div class="screen" id="screen-quiz">
-  <div class="page-header" style="position:relative;">
+  <div class="page-header" style="position:relative; padding: 52px 20px 22px;">
     <button class="back-btn" onclick="endStudy()">←</button>
-    <div class="progress-wrap">
+    <div class="progress-wrap" style="padding-top:0;">
       <div class="progress-bar-bg"><div class="progress-bar" id="quizPB" style="width:0%"></div></div>
       <div class="progress-label" id="quizPL"></div>
     </div>
@@ -363,6 +361,9 @@
       <div class="quiz-word" id="quizWord"></div>
       <div style="font-size:12px;color:var(--text-muted);margin-top:4px;">이 단어의 뜻은?</div>
       <button class="sound-btn" onclick="speak()" style="margin-top:8px;">🔊</button>
+    </div>
+    <div style="margin-bottom:10px;">
+      <button class="shuffle-btn" style="width:100%;" onclick="shuffleQuiz()">🔀 섞기 (처음부터)</button>
     </div>
     <div class="quiz-options" id="quizOpts"></div>
     <div class="quiz-score-bar" id="quizScoreBar"></div>
@@ -411,8 +412,9 @@ let unknownSet  = new Set();
 
 let blinkTimer        = null;
 let blinkCountInterval= null;
-let blinkDelay        = 3.0;
-let blinkPlaying      = true;
+// 7. 표시 시간 localStorage에서 복원
+let blinkDelay = parseFloat(localStorage.getItem('blinkDelay') || '3.0');
+let blinkPlaying      = false;  // 7. 처음엔 정지 상태
 
 let quizScore    = 0;
 let quizAnswered = false;
@@ -496,10 +498,12 @@ function buildBookList() {
 }
 
 function selectBook(i) {
-  // 브라우저 오디오 정책 해제 — 첫 터치(gesture) 시점에 워밍업
+  // 6. 브라우저 오디오 정책 해제 — 첫 터치(gesture) 시점에 워밍업
   if (window.speechSynthesis) {
-    const warmup = new SpeechSynthesisUtterance('');
+    window.speechSynthesis.cancel();
+    const warmup = new SpeechSynthesisUtterance(' ');
     warmup.volume = 0;
+    warmup.lang = 'en-US';
     window.speechSynthesis.speak(warmup);
   }
 
@@ -625,9 +629,15 @@ function shuffleCards() {
 //  BLINK
 // ════════════════════════════════════════
 function startBlink() {
-  blinkPlaying = true;
-  document.getElementById('blinkPlayBtn').textContent = '⏸ 일시정지';
-  renderBlink(); scheduleBlink();
+  // 7. 저장된 속도값 슬라이더에 반영
+  const slider = document.getElementById('speedSlider');
+  slider.value = blinkDelay;
+  document.getElementById('speedVal').textContent = blinkDelay.toFixed(1) + '초';
+
+  // 7. 처음엔 정지 상태 → 재생 버튼 표시
+  blinkPlaying = false;
+  document.getElementById('blinkPlayBtn').textContent = '▶ 재생';
+  renderBlink();
 }
 function renderBlink() {
   const c = cards[cardIdx]; if (!c) return;
@@ -676,6 +686,23 @@ function blinkStep(dir) {
 function updateSpeed(v) {
   blinkDelay = parseFloat(v);
   document.getElementById('speedVal').textContent = blinkDelay.toFixed(1) + '초';
+  localStorage.setItem('blinkDelay', blinkDelay);  // 7. 저장
+}
+function shuffleBlink() {
+  clearBlink();
+  for (let i = cards.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [cards[i], cards[j]] = [cards[j], cards[i]];
+  }
+  cardIdx = 0; renderBlink();
+  if (blinkPlaying) scheduleBlink();
+}
+function shuffleQuiz() {
+  for (let i = cards.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [cards[i], cards[j]] = [cards[j], cards[i]];
+  }
+  cardIdx = 0; quizScore = 0; renderQuiz();
 }
 
 // ════════════════════════════════════════
@@ -765,9 +792,16 @@ function shuffle(arr) {
 function speak() {
   if (!window.speechSynthesis) return;
   window.speechSynthesis.cancel();
-  const u = new SpeechSynthesisUtterance(currentWord);
-  u.lang = 'en-US'; u.rate = 0.85;
-  window.speechSynthesis.speak(u);
+  // 6. iOS에서 cancel() 후 바로 speak()하면 무시되는 버그 대응
+  setTimeout(() => {
+    const u = new SpeechSynthesisUtterance(currentWord);
+    u.lang = 'en-US';
+    u.rate = 0.85;
+    u.volume = 1;
+    // iOS에서 speechSynthesis가 paused 상태일 수 있어 resume 먼저
+    if (window.speechSynthesis.paused) window.speechSynthesis.resume();
+    window.speechSynthesis.speak(u);
+  }, 50);
 }
 // ════════════════════════════════════════
 //  NAVIGATION
