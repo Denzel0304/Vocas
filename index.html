@@ -245,8 +245,14 @@
   }
   #screen-quiz.active { display: flex; }
   /* 결과 화면 — 버튼 고정을 위해 flex */
-  #screen-result { flex-direction: column; height: 100vh; overflow: hidden; }
+  #screen-result { flex-direction: column; overflow: hidden; }
   #screen-result.active { display: flex; }
+  #screen-result .result-btn-wrap {
+    flex-shrink: 0;
+    padding: 14px 16px;
+    padding-bottom: max(28px, env(safe-area-inset-bottom, 28px));
+    background: linear-gradient(160deg,#E8F6FF 0%,#D4EDFF 50%,#C8E8FF 100%);
+  }
   #screen-quiz .card-area {
     flex: 1; display: flex; flex-direction: column;
     padding: 12px 16px; overflow: hidden;
@@ -500,9 +506,9 @@
       <div class="wrong-list" id="wrongList"></div>
     </div>
   </div>
-  <div style="flex-shrink:0; padding:14px 16px 28px; background:linear-gradient(160deg,#E8F6FF 0%,#D4EDFF 50%,#C8E8FF 100%);">
+  <div class="result-btn-wrap">
     <div class="result-btns">
-      <button class="ctrl-btn secondary" onclick="goToMode()" style="flex:1;">← 다시 선택</button>
+      <button class="ctrl-btn secondary" onclick="goToMode()" style="flex:1;">← 모드 선택</button>
       <button class="ctrl-btn primary" id="retryBtn" onclick="startMode('retry')" style="flex:1;display:none;">🔁 틀린것 재도전</button>
     </div>
   </div>
@@ -872,8 +878,11 @@ function renderQuiz() {
   setPB('quiz', cardIdx + 1, cards.length);
 
   const dayMeanings = byDay[currentDay].map(w => w.meaning);
-  const others = dayMeanings.filter(m => m !== c.meaning);
-  const opts   = shuffle([...shuffle(others).slice(0, 3), c.meaning]);
+  const others = shuffle(dayMeanings.filter(m => m !== c.meaning)).slice(0, 3);
+  // 정답 위치를 0~3 중 랜덤으로 먼저 결정 → 25% 균등 보장
+  const answerPos = Math.floor(Math.random() * 4);
+  const opts = [...others];
+  opts.splice(answerPos, 0, c.meaning);
   const cont   = document.getElementById('quizOpts');
   cont.innerHTML = '';
   opts.forEach(opt => {
