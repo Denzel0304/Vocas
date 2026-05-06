@@ -266,6 +266,7 @@
   .quiz-opt:active  { background: var(--sky-light); }
   .quiz-opt.correct { background: #d4f5e4; border-color: #27ae60; color: #1a6b46; }
   .quiz-opt.wrong   { background: #fde8e8; border-color: #e74c3c; color: #8b2a1e; }
+  .quiz-opt.dimmed  { background: #f0f0f0; border-color: #ccc; color: rgba(0,0,0,0.25); cursor: default; }
   .quiz-score-bar   { font-size: 13px; color: var(--text-muted); font-weight: 600; text-align: center; margin-top: 8px; }
 
   /* RESULT */
@@ -870,18 +871,34 @@ function renderQuiz() {
 }
 function answerQuiz(btn, chosen, correct, word) {
   if (quizAnswered) return; quizAnswered = true;
+  const isCorrect = chosen === correct;
+
   document.querySelectorAll('.quiz-opt').forEach(b => {
-    if (b.textContent === correct) b.classList.add('correct');
-    else if (b === btn && chosen !== correct) b.classList.add('wrong');
+    if (b.textContent === correct) {
+      b.classList.add('correct');
+    } else if (b === btn && !isCorrect) {
+      b.classList.add('wrong');
+      b.classList.add('dimmed');
+    } else {
+      b.classList.add('dimmed');
+    }
   });
-  if (chosen === correct) { quizScore++; knownSet.add(word); unknownSet.delete(word); }
-  else                    { unknownSet.add(word); knownSet.delete(word); }
+
+  if (isCorrect) { quizScore++; knownSet.add(word); unknownSet.delete(word); }
+  else           { unknownSet.add(word); knownSet.delete(word); }
   saveProg();
   document.getElementById('quizScoreBar').textContent = `점수: ${quizScore} / ${cardIdx + 1}`;
+
+  // 효과음 재생
+  try {
+    const sfx = new Audio(isCorrect ? 'effect 1.mp3' : 'effect 2.mp3');
+    sfx.play().catch(() => {});
+  } catch(e) {}
+
   setTimeout(() => {
     if (cardIdx + 1 < cards.length) { cardIdx++; renderQuiz(); }
     else showResult();
-  }, 1000);
+  }, isCorrect ? 2000 : 3000);
 }
 
 // ════════════════════════════════════════
