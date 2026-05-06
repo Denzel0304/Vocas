@@ -783,8 +783,8 @@ function renderBlink() {
   currentWord = c.word;
   document.getElementById('blinkTag').textContent     = `Day ${c.day}`;
   document.getElementById('blinkWord').textContent    = c.word;
-  document.getElementById('blinkMeaning').textContent = c.meaning;
   document.getElementById('blinkMeaning').classList.remove('show');
+  setTimeout(() => { document.getElementById('blinkMeaning').textContent = c.meaning; }, 500);
   document.getElementById('blinkTimer').textContent   = '';
   document.getElementById('blinkTimer').classList.remove('urgent');
   setPB('blink', cardIdx + 1, cards.length);
