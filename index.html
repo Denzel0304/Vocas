@@ -58,6 +58,8 @@
   /* SCREENS — 내용이 넘칠 때만 스크롤 */
   .screen { display: none; height: 100vh; overflow-y: auto; overflow-x: hidden; animation: fadeIn 0.22s ease; padding-bottom: 60px; }
   .screen.active { display: block; }
+  /* 결과 화면은 flex로 덮어씀 — .screen.active보다 specificity 높게 */
+  #screen-result.active { display: flex !important; flex-direction: column; overflow: hidden; padding-bottom: 0; }
   @keyframes fadeIn { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:translateY(0); } }
 
   /* PAGE HEADER */
@@ -244,9 +246,7 @@
     height: 100vh; overflow: hidden;
   }
   #screen-quiz.active { display: flex; }
-  /* 결과 화면 — 버튼 고정을 위해 flex */
-  #screen-result { flex-direction: column; overflow: hidden; }
-  #screen-result.active { display: flex; }
+  /* 결과 화면 버튼 고정 영역 */
   #screen-result .result-btn-wrap {
     flex-shrink: 0;
     padding: 14px 16px;
