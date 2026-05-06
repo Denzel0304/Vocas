@@ -443,7 +443,7 @@
     </div>
     <div class="speed-row">
       <label>표시 시간</label>
-      <input type="range" min="1" max="8" value="3" step="0.5" id="speedSlider" oninput="updateSpeed(this.value)">
+      <input type="range" min="1" max="4" value="3" step="0.5" id="speedSlider" oninput="updateSpeed(this.value)">
       <span class="speed-val" id="speedVal">3.0초</span>
     </div>
   </div>
@@ -806,7 +806,7 @@ function scheduleBlink() {
     blinkTimer = setTimeout(() => {
       if (cardIdx + 1 < cards.length) { cardIdx++; renderBlink(); speak(); scheduleBlink(); }
       else { clearBlink(); showResult(); }
-    }, blinkDelay * 600);
+    }, blinkDelay * 750);
   }, blinkDelay * 1000);
 }
 function clearBlink() { clearTimeout(blinkTimer); clearInterval(blinkCountInterval); }
