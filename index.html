@@ -267,6 +267,7 @@
   .quiz-opt.correct { background: #d4f5e4; border-color: #27ae60; color: #1a6b46; }
   .quiz-opt.wrong   { background: #fde8e8; border-color: #e74c3c; color: #8b2a1e; }
   .quiz-opt.dimmed  { background: #f0f0f0; border-color: #ccc; color: rgba(0,0,0,0.25); cursor: default; }
+  .quiz-ox { position: absolute; top: 8px; right: 14px; font-size: 28px; line-height: 1; display: none; }
   .quiz-score-bar   { font-size: 13px; color: var(--text-muted); font-weight: 600; text-align: center; margin-top: 8px; }
 
   /* RESULT */
@@ -461,6 +462,7 @@
   </div>
   <div class="card-area">
     <div class="quiz-q-card">
+      <span class="quiz-ox" id="quizOX"></span>
       <span class="tag" id="quizTag" style="background:#A8E6CF;color:#1a6b46;"></span>
       <div class="quiz-center">
         <div class="quiz-word" id="quizWord"></div>
@@ -857,6 +859,7 @@ function shuffleQuiz() {
 function renderQuiz() {
   const c = cards[cardIdx]; if (!c) return;
   currentWord = c.word; quizAnswered = false;
+  document.getElementById('quizOX').style.display = 'none';
   document.getElementById('quizTag').textContent      = `Day ${c.day}`;
   document.getElementById('quizWord').textContent     = c.word;
   document.getElementById('quizScoreBar').textContent = `점수: ${quizScore} / ${cardIdx}`;
@@ -900,6 +903,11 @@ function answerQuiz(btn, chosen, correct, word) {
     const sfx = new Audio(isCorrect ? 'effect 1.mp3' : 'effect 2.mp3');
     sfx.play().catch(() => {});
   } catch(e) {}
+
+  // OX 표시
+  const oxEl = document.getElementById('quizOX');
+  oxEl.textContent = isCorrect ? '⭕' : '❌';
+  oxEl.style.display = 'block';
 
   setTimeout(() => {
     if (cardIdx + 1 < cards.length) { cardIdx++; renderQuiz(); }
