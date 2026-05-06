@@ -616,6 +616,12 @@ function selectBook(i) {
     warmup.lang = 'en-US';
     window.speechSynthesis.speak(warmup);
   }
+  // Audio 객체 iOS unlock — 무음 재생으로 효과음 채널 사전 허용
+  try {
+    const _au = new Audio();
+    _au.volume = 0;
+    _au.play().catch(() => {});
+  } catch(e) {}
 
   currentBook = books[i];
   VOCAB       = currentBook.words;
