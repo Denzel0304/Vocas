@@ -245,6 +245,7 @@
   }
   #screen-quiz.active { display: flex; }
   /* 결과 화면 — 버튼 고정을 위해 flex */
+  #screen-result { flex-direction: column; height: 100vh; overflow: hidden; }
   #screen-result.active { display: flex; }
   #screen-quiz .card-area {
     flex: 1; display: flex; flex-direction: column;
@@ -482,7 +483,7 @@
 </div>
 
 <!-- ⑦ 결과 -->
-<div class="screen" id="screen-result" style="display:none; flex-direction:column; height:100vh; overflow:hidden;">
+<div class="screen" id="screen-result">
   <div class="page-header" style="position:relative; padding-top:52px; flex-shrink:0;">
     <button class="back-btn" onclick="goToMode()">←</button>
     <h1>결과</h1>
