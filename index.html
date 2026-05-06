@@ -531,6 +531,7 @@ function loadProg(day) {
 //  LOAD — word01.json, word02.json ... 한계 없이
 // ════════════════════════════════════════
 async function loadAllBooks() {
+  const splashStart = Date.now();
   books = [];
   let num = 1;
   while (true) {
@@ -548,6 +549,9 @@ async function loadAllBooks() {
       num++;
     } catch(e) { break; }
   }
+
+  const elapsed = Date.now() - splashStart;
+  if (elapsed < 2000) await new Promise(r => setTimeout(r, 2000 - elapsed));
 
   document.getElementById('loading').classList.add('hidden');
   initHistory();  // 최하단 스택 세팅
