@@ -1037,6 +1037,8 @@ function showScreen(id) {
   const el = document.getElementById(id);
   el.classList.add('active');
   el.scrollTop = 0;
+  // 화면 내부에 자체 스크롤 컨테이너가 있는 경우(결과 화면 등) 함께 리셋
+  el.querySelectorAll('.result-scroll-area').forEach(s => s.scrollTop = 0);
 }
 
 function goTo(id) {
