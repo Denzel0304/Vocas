@@ -56,22 +56,30 @@
   }
 
   /* SCREENS — 내용이 넘칠 때만 스크롤 */
-  .screen { display: none; height: 100vh; overflow-y: auto; overflow-x: hidden; animation: fadeIn 0.22s ease; padding-bottom: 60px; }
+  .screen { display: none; height: 100vh; height: 100dvh; overflow-y: auto; overflow-x: hidden; animation: fadeIn 0.22s ease; padding-bottom: 60px; }
   .screen.active { display: block; }
-  /* 결과 화면은 flex로 덮어씀 — .screen.active보다 specificity 높게 */
-  #screen-result.active { display: block !important; padding-bottom: 0; overflow-y: auto; overflow-x: hidden; }
+  /* 결과 화면: flex column 레이아웃 - 헤더/스크롤영역/버튼바 분리 */
+  #screen-result.active {
+    display: flex !important;
+    flex-direction: column;
+    padding-bottom: 0;
+    overflow: hidden;
+  }
+  #screen-result .page-header { flex-shrink: 0; }
   #screen-result .result-scroll-area {
-    padding: 18px 16px 100px;
+    flex: 1 1 auto;
+    min-height: 0;            /* flex child가 스크롤되려면 필수 */
+    overflow-y: auto;
+    overflow-x: hidden;
     -webkit-overflow-scrolling: touch;
+    padding: 18px 16px 20px;
   }
   #screen-result .result-btn-wrap {
-    position: fixed;
-    bottom: 0; left: 0; right: 0;
+    flex-shrink: 0;
     padding: 14px 16px;
-    padding-bottom: max(20px, env(safe-area-inset-bottom, 20px));
+    padding-bottom: max(14px, env(safe-area-inset-bottom, 14px));
     background: linear-gradient(160deg,#E8F6FF 0%,#D4EDFF 50%,#C8E8FF 100%);
     box-shadow: 0 -4px 16px rgba(135,206,235,0.25);
-    z-index: 10;
   }
   @keyframes fadeIn { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:translateY(0); } }
 
